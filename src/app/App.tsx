@@ -536,27 +536,161 @@ function AboutSection() {
         {/* Timeline */}
         <div>
           <h3
-            className="text-3xl font-bold text-foreground mb-12 text-center"
+            className="text-3xl md:text-4xl font-bold text-foreground mb-14 text-center"
             style={{ fontFamily: "var(--font-family-display)" }}
           >
             Our Journey
           </h3>
-          <div className="relative pl-8 md:pl-10 border-l-2 border-border space-y-8">
-            {TIMELINE.map((item, i) => (
-              <div key={item.year} className="relative group">
-                <div className="absolute -left-[2.6rem] md:-left-[2.85rem] w-5 h-5 rounded-full bg-primary border-4 border-background shadow-sm group-hover:bg-accent transition-colors" />
-                <div className="text-accent font-bold text-xs tracking-widest uppercase mb-1">
-                  {item.year}
-                </div>
-                <h4
-                  className="text-lg font-bold text-foreground mb-1"
-                  style={{ fontFamily: "var(--font-family-display)" }}
-                >
-                  {item.title}
-                </h4>
-                <p className="text-muted-foreground text-sm leading-relaxed max-w-xl">{item.desc}</p>
-              </div>
-            ))}
+
+          <div className="relative max-w-5xl mx-auto">
+            {/* Central tree trunk - desktop */}
+            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-[3px] bg-gradient-to-b from-primary/20 via-primary to-primary/20 -translate-x-1/2 rounded-full" />
+
+            {/* Mobile trunk */}
+            <div className="md:hidden absolute left-4 top-0 bottom-0 w-[3px] bg-gradient-to-b from-primary/20 via-primary to-primary/20 rounded-full" />
+
+            <div className="space-y-10 md:space-y-0">
+              {TIMELINE.map((item, i) => {
+                const isLeft = i % 2 === 0;
+
+                return (
+                  <div
+                    key={item.year}
+                    className="relative md:grid md:grid-cols-2 md:min-h-[170px]"
+                  >
+                    {/* Mobile connector */}
+                    <div className="md:hidden absolute left-4 top-7 w-8 h-[2px] bg-primary/50" />
+
+                    {/* Desktop branch */}
+                    <div
+                      className={`hidden md:block absolute top-7 h-[2px] bg-primary/50 ${isLeft
+                          ? "right-1/2 w-12"
+                          : "left-1/2 w-12"
+                        }`}
+                    />
+
+                    {/* Tree node */}
+                    <div
+                      className="
+                absolute
+                z-10
+                w-5 h-5
+                rounded-full
+                bg-primary
+                border-4
+                border-background
+                shadow-[0_0_0_4px_rgba(30,90,95,0.12)]
+                top-[18px]
+                left-[4px]
+                md:left-1/2
+                md:-translate-x-1/2
+              "
+                    />
+
+                    {/* Content */}
+                    <div
+                      className={`
+                ml-14
+                md:ml-0
+                ${isLeft
+                          ? "md:pr-16 md:text-right"
+                          : "md:col-start-2 md:pl-16"
+                        }
+              `}
+                    >
+                      <div
+                        className="
+                  group
+                  relative
+                  p-6
+                  rounded-2xl
+                  bg-background
+                  border border-border
+                  shadow-sm
+                  hover:shadow-xl
+                  hover:-translate-y-1
+                  transition-all
+                  duration-300
+                "
+                      >
+                        {/* Small decorative branch */}
+                        <div
+                          className={`
+                    hidden md:block
+                    absolute top-6
+                    w-3 h-3
+                    rotate-45
+                    bg-background
+                    border-t border-l border-border
+                    ${isLeft
+                              ? "-right-[7px]"
+                              : "-left-[7px]"
+                            }
+                  `}
+                        />
+
+                        {/* Year */}
+                        <div
+                          className={`
+                    inline-flex
+                    items-center
+                    justify-center
+                    px-3 py-1
+                    rounded-full
+                    text-xs
+                    font-bold
+                    tracking-widest
+                    text-primary
+                    bg-primary/10
+                    mb-3
+                    ${isLeft ? "md:ml-auto" : ""
+                            }
+                  `}
+                        >
+                          {item.year}
+                        </div>
+
+                        {/* Title */}
+                        <h4
+                          className="text-xl font-bold text-foreground mb-2"
+                          style={{
+                            fontFamily: "var(--font-family-display)",
+                          }}
+                        >
+                          {item.title}
+                        </h4>
+
+                        {/* Description */}
+                        <p className="text-muted-foreground text-sm leading-relaxed">
+                          {item.desc}
+                        </p>
+
+                        {/* Bottom accent */}
+                        <div
+                          className={`
+                    absolute
+                    bottom-0
+                    h-1
+                    bg-gradient-to-r
+                    from-primary
+                    to-accent
+                    rounded-full
+                    transition-all
+                    duration-300
+                    w-0
+                    group-hover:w-24
+                    ${isLeft
+                              ? "right-0"
+                              : "left-0"
+                            }
+                  `}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
