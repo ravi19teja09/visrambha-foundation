@@ -614,7 +614,7 @@ function ProgramsSection() {
                   : "text-accent hover:text-primary"
                   }`}
               >
-                Learn More <ArrowRight className="w-4 h-4" />
+                See More <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           ))}
@@ -918,9 +918,9 @@ function EventsSection() {
               </div>
               {tab === "upcoming" && (
                 <div className="shrink-0 flex items-center">
-                  <button className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+                  {/* <button className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
                     Register <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </button> */}
                 </div>
               )}
             </div>
