@@ -9,7 +9,7 @@ import {
   Check,
   QrCode,
   Building2,
-  CreditCard,
+  CreditCard, Calculator
 } from "lucide-react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
@@ -17,14 +17,21 @@ import logoImg from "@/imports/Screenshot_2026-08-07_171608.png";
 import FloatingActions from "@/app/components/ui/FloatingActions";
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
+// // Tax calculator
+const SLABS = [
+  { label: "5% Slab", desc: "Income ₹2.5L – ₹5L", rate: 5 },
+  { label: "20% Slab", desc: "Income ₹5L – ₹10L", rate: 20 },
+  { label: "30% Slab", desc: "Income above ₹10L", rate: 30 },
+];
+
 const NAV_LINKS = [
   { label: "About", href: "#about" },
   { label: "Programs", href: "#programs" },
-  { label: "Impact", href: "#impact" },
-  { label: "Stories", href: "#stories" },
-  { label: "Gallery", href: "#gallery" },
+  // { label: "Impact", href: "#impact" },
+  // { label: "Stories", href: "#stories" },
+  // { label: "Gallery", href: "#gallery" },
   { label: "Events", href: "#events" },
-  { label: "Transparency", href: "#transparency" },
+  // { label: "Transparency", href: "#transparency" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -32,20 +39,26 @@ const FOUNDERS = [
   {
     name: "Dr. Ramesh Sharma",
     role: "Founder & Chairman",
+    initials: "RS",
     bio: "A retired IAS officer with 35 years of public service, Dr. Sharma founded Visrambha to address educational inequalities in rural India.",
-    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=600&fit=crop&auto=format",
   },
   {
     name: "Priya Menon",
     role: "Co-Founder & CEO",
+    initials: "PM",
     bio: "Former UNICEF education specialist, Priya brings 20 years of international development experience to drive the Foundation's strategic vision.",
-    img: "https://images.unsplash.com/photo-1573497019707-1c04de26e58c?w=600&h=600&fit=crop&auto=format",
   },
   {
     name: "Arun Krishnamurthy",
     role: "Co-Founder & CTO",
+    initials: "AK",
     bio: "Tech entrepreneur turned social activist, Arun leads digital learning initiatives and the Foundation's technology infrastructure.",
-    img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&h=600&fit=crop&auto=format",
+  },
+  {
+    name: "Ananya Rao",
+    role: "Co-Founder & COO",
+    initials: "AR",
+    bio: "A development professional focused on community engagement, Ananya oversees partnerships and programs that create lasting social impact.",
   },
 ];
 
@@ -58,6 +71,10 @@ const TIMELINE = [
   { year: 2023, title: "UNESCO Recognition", desc: "Received the UNESCO Civil Society Education Award for innovative community-driven learning." },
   { year: 2024, title: "15,000 Children Milestone", desc: "Crossed the milestone of actively supporting 15,000 children across 8 states." },
 ];
+
+const sliderStyle = (v: number, min: number, max: number) => ({
+  background: `linear-gradient(to right, #1D4E5F ${((v - min) / (max - min)) * 100}%, #EDE9E3 ${((v - min) / (max - min)) * 100}%)`,
+});
 
 const PROGRAMS = [
   { icon: BookOpen, title: "Education Support", desc: "Quality learning materials, after-school tutoring, and academic mentorship for students in underserved communities.", color: "primary" },
@@ -396,7 +413,7 @@ function AboutSection() {
   return (
     <section id="about" className="py-28 bg-background">
       <div className="max-w-7xl mx-auto px-6">
-        <SectionTag number="01" label="About Us" />
+        <SectionTag number="02" label="About Us" />
 
         {/* Mission/Vision/Values + Image */}
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-28">
@@ -493,39 +510,205 @@ function AboutSection() {
         </div>
 
         {/* Founders */}
-        <div className="mb-28">
+        <div className="">
           <h3
             className="text-3xl font-bold text-foreground mb-12 text-center"
             style={{ fontFamily: "var(--font-family-display)" }}
           >
             Meet Our Founders
           </h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            {FOUNDERS.map(f => (
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {FOUNDERS.map((f, index) => (
               <div
                 key={f.name}
-                className="group relative bg-card border border-border rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-400 hover:-translate-y-1.5"
+                className="
+          group relative overflow-hidden
+          bg-card
+          border border-border
+          rounded-[2rem]
+          p-7
+          transition-all duration-500
+          hover:-translate-y-2
+          hover:shadow-[0_24px_60px_rgba(0,0,0,0.10)]
+        "
               >
-                <div className="aspect-[3/2] overflow-hidden bg-muted">
-                  <img
-                    src={f.img}
-                    alt={f.name}
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                  />
+                {/* Top-right decorative circle */}
+                <div
+                  className="
+            absolute -top-16 -right-16
+            w-40 h-40
+            rounded-full
+            bg-[#C99A32]/10
+            transition-transform duration-700
+            group-hover:scale-125
+          "
+                />
+
+                {/* Bottom-left decorative circle */}
+                <div
+                  className="
+            absolute -bottom-20 -left-20
+            w-44 h-44
+            rounded-full
+            bg-primary/5
+          "
+                />
+
+                {/* Founder number */}
+                <div
+                  className="
+            absolute top-6 right-7
+            text-5xl
+            font-bold
+            text-foreground/[0.04]
+            select-none
+          "
+                >
+                  0{index + 1}
                 </div>
-                <div className="p-7">
-                  <div className="inline-flex items-center px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-semibold mb-4 border border-accent/15">
-                    {f.role}
-                  </div>
-                  <h4
-                    className="text-xl font-bold text-foreground mb-2"
-                    style={{ fontFamily: "var(--font-family-display)" }}
+
+                {/* Founder Monogram */}
+                <div className="relative mb-7 flex justify-center">
+                  <div
+                    className="
+              relative
+              w-28 h-28
+              rounded-full
+              flex items-center justify-center
+              bg-gradient-to-br
+              from-[#D4A63A]
+              to-[#B98520]
+              text-white
+              shadow-[0_12px_30px_rgba(180,130,30,0.25)]
+              border-[6px]
+              border-[#F8F3E8]
+              transition-all duration-500
+              group-hover:scale-105
+              group-hover:shadow-[0_16px_40px_rgba(180,130,30,0.35)]
+            "
                   >
-                    {f.name}
-                  </h4>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{f.bio}</p>
+                    <span
+                      className="
+                text-3xl
+                font-semibold
+                tracking-wide
+              "
+                    >
+                      {f.initials}
+                    </span>
+
+                    {/* Small decorative ring */}
+                    <div
+                      className="
+                absolute inset-[-5px]
+                rounded-full
+                border border-[#C99A32]/30
+                pointer-events-none
+              "
+                    />
+                  </div>
                 </div>
-                <div className="absolute top-4 right-4 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
+
+                {/* Role */}
+                <div className="relative flex justify-center mb-5">
+                  <span
+                    className="
+              inline-flex
+              items-center
+              px-3.5 py-1.5
+              rounded-full
+              bg-[#C99A32]/10
+              text-[#B98520]
+              text-xs
+              font-semibold
+              border border-[#C99A32]/20
+            "
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#C99A32] mr-2" />
+                    {f.role}
+                  </span>
+                </div>
+
+                {/* Name */}
+                <h4
+                  className="
+            relative
+            text-xl
+            font-bold
+            text-foreground
+            text-center
+            mb-4
+          "
+                  style={{ fontFamily: "var(--font-family-display)" }}
+                >
+                  {f.name}
+                </h4>
+
+                {/* Bio */}
+                <p
+                  className="
+            relative
+            text-muted-foreground
+            text-sm
+            leading-6
+            text-center
+            min-h-[120px]
+          "
+                >
+                  {f.bio}
+                </p>
+
+                {/* Bottom section */}
+                <div
+                  className="
+            relative
+            mt-6
+            pt-5
+            border-t
+            border-border
+            flex
+            items-center
+            justify-center
+            gap-2
+          "
+                >
+                  <div
+                    className="
+              h-1
+              w-8
+              rounded-full
+              bg-[#C99A32]
+              transition-all
+              duration-500
+              group-hover:w-12
+            "
+                  />
+
+                  <span className="text-xs text-muted-foreground">
+                    Visrambha Foundation
+                  </span>
+                </div>
+
+                {/* LinkedIn */}
+                <div
+                  className="
+            absolute
+            top-6
+            left-6
+            w-8 h-8
+            rounded-full
+            bg-background
+            border border-border
+            flex items-center justify-center
+            opacity-0
+            scale-75
+            group-hover:opacity-100
+            group-hover:scale-100
+            transition-all duration-300
+            shadow-sm
+          "
+                >
                   <Linkedin className="w-4 h-4 text-primary" />
                 </div>
               </div>
@@ -533,166 +716,6 @@ function AboutSection() {
           </div>
         </div>
 
-        {/* Timeline */}
-        <div>
-          <h3
-            className="text-3xl md:text-4xl font-bold text-foreground mb-14 text-center"
-            style={{ fontFamily: "var(--font-family-display)" }}
-          >
-            Our Journey
-          </h3>
-
-          <div className="relative max-w-5xl mx-auto">
-            {/* Central tree trunk - desktop */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-[3px] bg-gradient-to-b from-primary/20 via-primary to-primary/20 -translate-x-1/2 rounded-full" />
-
-            {/* Mobile trunk */}
-            <div className="md:hidden absolute left-4 top-0 bottom-0 w-[3px] bg-gradient-to-b from-primary/20 via-primary to-primary/20 rounded-full" />
-
-            <div className="space-y-10 md:space-y-0">
-              {TIMELINE.map((item, i) => {
-                const isLeft = i % 2 === 0;
-
-                return (
-                  <div
-                    key={item.year}
-                    className="relative md:grid md:grid-cols-2 md:min-h-[170px]"
-                  >
-                    {/* Mobile connector */}
-                    <div className="md:hidden absolute left-4 top-7 w-8 h-[2px] bg-primary/50" />
-
-                    {/* Desktop branch */}
-                    <div
-                      className={`hidden md:block absolute top-7 h-[2px] bg-primary/50 ${isLeft
-                          ? "right-1/2 w-12"
-                          : "left-1/2 w-12"
-                        }`}
-                    />
-
-                    {/* Tree node */}
-                    <div
-                      className="
-                absolute
-                z-10
-                w-5 h-5
-                rounded-full
-                bg-primary
-                border-4
-                border-background
-                shadow-[0_0_0_4px_rgba(30,90,95,0.12)]
-                top-[18px]
-                left-[4px]
-                md:left-1/2
-                md:-translate-x-1/2
-              "
-                    />
-
-                    {/* Content */}
-                    <div
-                      className={`
-                ml-14
-                md:ml-0
-                ${isLeft
-                          ? "md:pr-16 md:text-right"
-                          : "md:col-start-2 md:pl-16"
-                        }
-              `}
-                    >
-                      <div
-                        className="
-                  group
-                  relative
-                  p-6
-                  rounded-2xl
-                  bg-background
-                  border border-border
-                  shadow-sm
-                  hover:shadow-xl
-                  hover:-translate-y-1
-                  transition-all
-                  duration-300
-                "
-                      >
-                        {/* Small decorative branch */}
-                        <div
-                          className={`
-                    hidden md:block
-                    absolute top-6
-                    w-3 h-3
-                    rotate-45
-                    bg-background
-                    border-t border-l border-border
-                    ${isLeft
-                              ? "-right-[7px]"
-                              : "-left-[7px]"
-                            }
-                  `}
-                        />
-
-                        {/* Year */}
-                        <div
-                          className={`
-                    inline-flex
-                    items-center
-                    justify-center
-                    px-3 py-1
-                    rounded-full
-                    text-xs
-                    font-bold
-                    tracking-widest
-                    text-primary
-                    bg-primary/10
-                    mb-3
-                    ${isLeft ? "md:ml-auto" : ""
-                            }
-                  `}
-                        >
-                          {item.year}
-                        </div>
-
-                        {/* Title */}
-                        <h4
-                          className="text-xl font-bold text-foreground mb-2"
-                          style={{
-                            fontFamily: "var(--font-family-display)",
-                          }}
-                        >
-                          {item.title}
-                        </h4>
-
-                        {/* Description */}
-                        <p className="text-muted-foreground text-sm leading-relaxed">
-                          {item.desc}
-                        </p>
-
-                        {/* Bottom accent */}
-                        <div
-                          className={`
-                    absolute
-                    bottom-0
-                    h-1
-                    bg-gradient-to-r
-                    from-primary
-                    to-accent
-                    rounded-full
-                    transition-all
-                    duration-300
-                    w-0
-                    group-hover:w-24
-                    ${isLeft
-                              ? "right-0"
-                              : "left-0"
-                            }
-                  `}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
@@ -704,7 +727,7 @@ function ProgramsSection() {
   return (
     <section id="programs" className="py-28 bg-secondary">
       <div className="max-w-7xl mx-auto px-6">
-        <SectionTag number="02" label="Our Programs" />
+        <SectionTag number="03" label="Our Programs" />
         <div className="grid lg:grid-cols-2 gap-12 items-end mb-16">
           <h2
             className="text-4xl lg:text-5xl font-bold text-foreground leading-[1.1]"
@@ -997,7 +1020,7 @@ function EventsSection() {
   return (
     <section id="events" className="py-28 bg-background">
       <div className="max-w-7xl mx-auto px-6">
-        <SectionTag number="06" label="Events" />
+        <SectionTag number="04" label="Events" />
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
           <h2
             className="text-4xl lg:text-5xl font-bold text-foreground leading-[1.1]"
@@ -1091,7 +1114,7 @@ function GetInvolvedSection() {
   return (
     <section id="get-involved" className="relative py-24 bg-primary overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <SectionTag number="07" label="Get Involved" />
+        <SectionTag number="01" label="Get Involved" />
 
         <h2
           className="text-4xl lg:text-5xl font-bold text-white leading-[1.1] max-w-xl mb-16"
@@ -1100,7 +1123,7 @@ function GetInvolvedSection() {
           Be the Reason a Child Believes in Their Future
         </h2>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid  gap-6">
 
           {/* ================= DONATE ================= */}
           <div className="bg-accent/8 border border-accent/25 rounded-3xl p-8 lg:p-10 hover:bg-accent/12 transition-colors duration-300">
@@ -1123,147 +1146,149 @@ function GetInvolvedSection() {
               underserved communities.
             </p>
 
-            {/* ================= QR SECTION ================= */}
-            <div className="rounded-2xl border border-white/15 bg-white/5 p-5 mb-5">
+            <div className="flex flex-col sm:flex-row justify-evenly">
+              {/* ================= QR SECTION ================= */}
+              <div className="rounded-2xl border border-white/15 bg-white/5 p-5 mb-5">
 
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center">
-                  <QrCode className="w-5 h-5 text-accent" />
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center">
+                    <QrCode className="w-5 h-5 text-accent" />
+                  </div>
+
+                  <div>
+                    <h4 className="text-white font-semibold">
+                      Scan & Pay
+                    </h4>
+                    <p className="text-white/45 text-xs">
+                      Scan the QR code using any UPI app
+                    </p>
+                  </div>
                 </div>
 
-                <div>
-                  <h4 className="text-white font-semibold">
-                    Scan & Pay
-                  </h4>
-                  <p className="text-white/45 text-xs">
-                    Scan the QR code using any UPI app
-                  </p>
-                </div>
-              </div>
+                <div className="flex flex-col sm:flex-row items-center gap-6">
 
-              <div className="flex flex-col sm:flex-row items-center gap-6">
+                  {/* Dummy QR */}
+                  <div className="w-36 h-36 rounded-xl bg-white p-3 flex items-center justify-center shadow-lg">
+                    <div className="w-full h-full border-4 border-black rounded-lg flex items-center justify-center relative overflow-hidden">
 
-                {/* Dummy QR */}
-                <div className="w-36 h-36 rounded-xl bg-white p-3 flex items-center justify-center shadow-lg">
-                  <div className="w-full h-full border-4 border-black rounded-lg flex items-center justify-center relative overflow-hidden">
-
-                    {/* Decorative dummy QR */}
-                    <div className="grid grid-cols-7 gap-1 w-[82%] h-[82%]">
-                      {Array.from({ length: 49 }).map((_, index) => (
-                        <span
-                          key={index}
-                          className={
-                            [0, 1, 2, 7, 9, 14, 21, 28, 35, 42, 43, 44, 46, 48]
-                              .includes(index)
-                              ? "bg-black"
-                              : index % 3 === 0
+                      {/* Decorative dummy QR */}
+                      <div className="grid grid-cols-7 gap-1 w-[82%] h-[82%]">
+                        {Array.from({ length: 49 }).map((_, index) => (
+                          <span
+                            key={index}
+                            className={
+                              [0, 1, 2, 7, 9, 14, 21, 28, 35, 42, 43, 44, 46, 48]
+                                .includes(index)
                                 ? "bg-black"
-                                : "bg-white"
-                          }
-                        />
-                      ))}
+                                : index % 3 === 0
+                                  ? "bg-black"
+                                  : "bg-white"
+                            }
+                          />
+                        ))}
+                      </div>
+
+                    </div>
+                  </div>
+
+                  {/* UPI */}
+                  <div className="flex-1 w-full">
+
+                    <p className="text-xs uppercase tracking-wider text-white/40 mb-2">
+                      UPI ID
+                    </p>
+
+                    <div className="flex items-center justify-between gap-3 bg-white/10 border border-white/15 rounded-xl px-4 py-3">
+
+                      <span className="text-white font-medium text-sm break-all">
+                        {donationDetails.upi}
+                      </span>
+
+                      <button
+                        onClick={() =>
+                          copyToClipboard(donationDetails.upi, "upi")
+                        }
+                        className="shrink-0 w-9 h-9 rounded-lg bg-accent/15 hover:bg-accent/25 flex items-center justify-center transition-colors"
+                        title="Copy UPI ID"
+                      >
+                        {copied === "upi" ? (
+                          <Check className="w-4 h-4 text-accent" />
+                        ) : (
+                          <Copy className="w-4 h-4 text-accent" />
+                        )}
+                      </button>
+
                     </div>
 
-                  </div>
-                </div>
-
-                {/* UPI */}
-                <div className="flex-1 w-full">
-
-                  <p className="text-xs uppercase tracking-wider text-white/40 mb-2">
-                    UPI ID
-                  </p>
-
-                  <div className="flex items-center justify-between gap-3 bg-white/10 border border-white/15 rounded-xl px-4 py-3">
-
-                    <span className="text-white font-medium text-sm break-all">
-                      {donationDetails.upi}
-                    </span>
-
-                    <button
-                      onClick={() =>
-                        copyToClipboard(donationDetails.upi, "upi")
-                      }
-                      className="shrink-0 w-9 h-9 rounded-lg bg-accent/15 hover:bg-accent/25 flex items-center justify-center transition-colors"
-                      title="Copy UPI ID"
-                    >
-                      {copied === "upi" ? (
-                        <Check className="w-4 h-4 text-accent" />
-                      ) : (
-                        <Copy className="w-4 h-4 text-accent" />
-                      )}
-                    </button>
+                    <p className="text-white/35 text-xs mt-3">
+                      Supports Google Pay, PhonePe, Paytm & other UPI apps
+                    </p>
 
                   </div>
-
-                  <p className="text-white/35 text-xs mt-3">
-                    Supports Google Pay, PhonePe, Paytm & other UPI apps
-                  </p>
-
                 </div>
               </div>
-            </div>
 
-            {/* ================= BANK DETAILS ================= */}
-            <div className="rounded-2xl border border-white/15 bg-white/5 p-5">
+              {/* ================= BANK DETAILS ================= */}
+              <div className="rounded-2xl border border-white/15 bg-white/5 p-5">
 
-              <div className="flex items-center gap-3 mb-5">
+                <div className="flex items-center gap-3 mb-5">
 
-                <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
-                  <Building2 className="w-5 h-5 text-white/80" />
+                  <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
+                    <Building2 className="w-5 h-5 text-white/80" />
+                  </div>
+
+                  <div>
+                    <h4 className="text-white font-semibold">
+                      Bank Transfer
+                    </h4>
+
+                    <p className="text-white/45 text-xs">
+                      Direct bank transfer
+                    </p>
+                  </div>
+
                 </div>
 
-                <div>
-                  <h4 className="text-white font-semibold">
-                    Bank Transfer
-                  </h4>
-
-                  <p className="text-white/45 text-xs">
-                    Direct bank transfer
-                  </p>
-                </div>
-
-              </div>
-
-              <div className="space-y-3">
-
-                <BankDetail
-                  label="Account Name"
-                  value={donationDetails.accountName}
-                />
-
-                <BankDetail
-                  label="Account Number"
-                  value={donationDetails.accountNumber}
-                  copyable
-                  copied={copied === "account"}
-                  onCopy={() =>
-                    copyToClipboard(
-                      donationDetails.accountNumber,
-                      "account"
-                    )
-                  }
-                />
-
-                <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-3">
 
                   <BankDetail
-                    label="IFSC"
-                    value={donationDetails.ifsc}
+                    label="Account Name"
+                    value={donationDetails.accountName}
                   />
 
                   <BankDetail
-                    label="Bank"
-                    value={donationDetails.bank}
+                    label="Account Number"
+                    value={donationDetails.accountNumber}
+                    copyable
+                    copied={copied === "account"}
+                    onCopy={() =>
+                      copyToClipboard(
+                        donationDetails.accountNumber,
+                        "account"
+                      )
+                    }
+                  />
+
+                  <div className="grid grid-cols-2 gap-3">
+
+                    <BankDetail
+                      label="IFSC"
+                      value={donationDetails.ifsc}
+                    />
+
+                    <BankDetail
+                      label="Bank"
+                      value={donationDetails.bank}
+                    />
+
+                  </div>
+
+                  <BankDetail
+                    label="Branch"
+                    value={donationDetails.branch}
                   />
 
                 </div>
-
-                <BankDetail
-                  label="Branch"
-                  value={donationDetails.branch}
-                />
-
               </div>
             </div>
 
@@ -1280,58 +1305,11 @@ function GetInvolvedSection() {
             </div>
 
           </div>
-
-
-          {/* ================= PARTNER ================= */}
-          <div className="bg-white/5 border border-white/12 rounded-3xl p-10 hover:bg-white/8 transition-colors duration-300">
-
-            <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mb-7">
-              <Globe className="w-8 h-8 text-white" />
-            </div>
-
-            <h3
-              className="text-2xl font-bold text-white mb-3"
-              style={{ fontFamily: "var(--font-family-display)" }}
-            >
-              Partner With Us
-            </h3>
-
-            <p className="text-white/65 leading-relaxed mb-8">
-              Corporations, foundations, and institutions — partner with
-              Visrambha to amplify your CSR impact. We provide full
-              compliance, reporting, and on-ground visibility.
-            </p>
-
-            <ul className="space-y-3.5 mb-10">
-              {[
-                "CSR partnerships & co-branding",
-                "Employee volunteering programs",
-                "In-kind donations & expertise sharing",
-                "Foundation grants & endowments",
-              ].map((item) => (
-                <li
-                  key={item}
-                  className="flex items-center gap-3 text-white/75 text-sm"
-                >
-                  <CheckCircle className="w-4 h-4 text-accent shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-
-            <button className="w-full border-2 border-white/25 text-white py-4 rounded-full font-semibold text-base hover:bg-white hover:text-primary transition-all">
-              Get in Touch
-            </button>
-
-          </div>
-
         </div>
       </div>
     </section>
   );
 }
-
-
 /* ================= BANK DETAIL COMPONENT ================= */
 
 function BankDetail({
@@ -1371,9 +1349,6 @@ function BankDetail({
     </div>
   );
 }
-
-
-
 
 // ─── TRANSPARENCY ─────────────────────────────────────────────────────────────
 
@@ -1516,6 +1491,327 @@ function TransparencySection() {
   );
 }
 
+// TAX CALCULATOR
+function TaxCalculator() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [aboutTab, setAboutTab] = useState("mission");
+  const [eventTab, setEventTab] = useState<"upcoming" | "past">("upcoming");
+  const [copied, setCopied] = useState<string | null>(null);
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [formSent, setFormSent] = useState(false);
+
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+
+
+  // Tax calculator
+  const [taxInput, setTaxInput] = useState("10000");
+  const [taxSlab, setTaxSlab] = useState(30);
+  const taxValue = parseFloat(taxInput.replace(/,/g, "")) || 0;
+  const deduction = taxValue * 0.5;
+  const taxSaved = deduction * (taxSlab / 100);
+  const netCost = taxValue - taxSaved;
+
+  // Tax calc
+  const [taxFreq, setTaxFreq] = useState<"once" | "monthly">("once");
+  const [donAmount2, setDonAmount2] = useState(10000);
+  const [taxSlab2, setTaxSlab2] = useState(30);
+  const annualBase2 = taxFreq === "monthly" ? donAmount2 * 12 : donAmount2;
+  const deduction2 = annualBase2 * 0.5;
+  const taxSaved2 = deduction2 * (taxSlab2 / 100);
+  const netCost2 = annualBase2 - taxSaved2;
+  const chartData = [
+    { name: "Net Cost", value: Math.max(1, netCost2), color: "#D9E6EA" },
+    { name: "Tax Saved", value: Math.max(0, taxSaved2), color: "#1D4E5F" },
+  ];
+
+  const fmtINR = (n: number) =>
+    n >= 100000 ? `₹${(n / 100000).toFixed(n % 100000 === 0 ? 0 : 1)}L` :
+      n >= 1000 ? `₹${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}K` :
+        `₹${n}`;
+
+  const sliderStyle = (v: number, min: number, max: number) => ({
+    background: `linear-gradient(to right, #1D4E5F ${((v - min) / (max - min)) * 100}%, #EDE9E3 ${((v - min) / (max - min)) * 100}%)`,
+  });
+
+  return (
+    <div>
+      <section id="tax" className="bg-background">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-14">
+            <span className="inline-block text-xs font-semibold tracking-[0.15em] uppercase bg-secondary text-primary px-4 py-1.5 rounded-full mb-4">
+              80G Tax Benefit
+            </span>
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground font-normal mb-4">
+              Calculate Your Tax Savings
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-xl mx-auto">
+              Donating to Visrambha Foundation qualifies for a 50% deduction under Section 80G of the Income Tax Act.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Calculator */}
+            <div className="bg-card border border-border rounded-3xl p-8 shadow-sm">
+              <div className="flex items-center gap-3 mb-7">
+                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center">
+                  <Calculator className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="font-display text-xl text-foreground">Tax Benefit Calculator</h3>
+              </div>
+
+              {/* Donation Input */}
+              <div className="mb-5">
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 block">
+                  Your Donation Amount (₹)
+                </label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">₹</span>
+                  <input
+                    type="number"
+                    value={taxInput}
+                    onChange={(e) => setTaxInput(e.target.value)}
+                    placeholder="Enter amount"
+                    className="w-full bg-input-background rounded-xl pl-8 pr-4 py-3.5 text-base font-semibold text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/25" />
+                </div>
+              </div>
+
+              {/* Slab selector */}
+              <div className="mb-7">
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 block">
+                  Your Income Tax Slab
+                </label>
+                <div className="flex flex-col gap-2">
+                  {SLABS.map((slab) => (
+                    <button key={slab.rate} onClick={() => setTaxSlab(slab.rate)}
+                      className={`flex items-center justify-between px-4 py-3 rounded-xl border text-left transition-all ${taxSlab === slab.rate ? "bg-secondary border-primary/30 text-primary" : "border-border text-foreground hover:border-primary/25"}`}>
+                      <span className="text-sm font-semibold">{slab.label}</span>
+                      <span className="text-xs text-muted-foreground">{slab.desc}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Results */}
+              <div className="bg-primary rounded-2xl p-5 text-white">
+                <p className="text-xs font-semibold uppercase tracking-wider text-white/50 mb-4">Your Benefit Breakdown</p>
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-white/70">Donation Amount</span>
+                    <span className="font-semibold">₹{taxValue.toLocaleString("en-IN")}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-white/70">80G Deduction (50%)</span>
+                    <span className="font-semibold text-accent">₹{deduction.toLocaleString("en-IN")}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-white/70">Tax Saved ({taxSlab}% slab)</span>
+                    <span className="font-semibold text-accent">₹{taxSaved.toLocaleString("en-IN")}</span>
+                  </div>
+                  <div className="border-t border-white/15 pt-3 flex items-center justify-between">
+                    <span className="text-sm font-semibold">Your Net Cost</span>
+                    <span className="text-xl font-bold text-accent">₹{netCost.toLocaleString("en-IN")}</span>
+                  </div>
+                </div>
+                {taxValue > 0 && (
+                  <div className="mt-4 bg-accent/20 rounded-xl px-4 py-3 text-center">
+                    <p className="text-xs text-white/80">You save <span className="font-bold text-accent">₹{taxSaved.toLocaleString("en-IN")}</span> in taxes.{" "}
+                      A donation of ₹{taxValue.toLocaleString("en-IN")} effectively costs you only <span className="font-bold text-accent">₹{netCost.toLocaleString("en-IN")}</span>!</p>
+                  </div>
+                )}
+              </div>
+              {/* <p className="text-xs text-muted-foreground mt-3 text-center">
+              * Applicable under the Old Tax Regime only. Consult your CA for exact savings.
+            </p> */}
+            </div>
+
+            {/* How 80G Works */}
+            <div className="flex flex-col gap-5">
+              <div className="bg-card border border-border rounded-3xl p-7">
+                <h3 className="font-display text-xl text-foreground mb-5">How Section 80G Works</h3>
+                <div className="flex flex-col gap-5">
+                  {[
+                    { step: "01", title: "Make Your Donation", desc: "Donate online via UPI, credit/debit card, or net banking. Any amount, anytime." },
+                    { step: "02", title: "Receive 80G Certificate", desc: "We issue a digitally signed 80G receipt to your email within 24 hours of your donation." },
+                    { step: "03", title: "Claim Deduction on ITR", desc: "Enter the donation details under Section 80G while filing your Income Tax Return." },
+                    { step: "04", title: "Save on Your Taxes", desc: "50% of your donation is deducted from your taxable income, reducing your tax liability." },
+                  ].map((item) => (
+                    <div key={item.step} className="flex gap-4">
+                      <div className="w-9 h-9 rounded-xl bg-secondary flex items-center justify-center text-xs font-bold text-primary shrink-0">
+                        {item.step}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-foreground text-sm mb-0.5">{item.title}</p>
+                        <p className="text-sm text-muted-foreground">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-primary rounded-2xl p-6 text-white">
+                <div className="flex items-start gap-3 mb-4">
+                  <CheckCircle className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold">80G Certified Foundation</p>
+                    <p className="text-xs text-white/60 mt-0.5">80G Registration No: DIT(E)/80G/Pune/2014-15/005</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {["12A Registered", "FCRA Certified", "NITI Aayog Listed", "CSR-1 Filed"].map((badge) => (
+                    <div key={badge} className="bg-white/10 rounded-xl px-3 py-2 text-xs text-white/75 font-medium text-center">
+                      {badge}
+                    </div>
+                  ))}
+                </div>
+                <a href="#get-involved"
+                  className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground font-semibold text-sm px-6 py-3 rounded-xl hover:bg-accent/90 transition-colors">
+                  <Heart className="w-4 h-4" /> Donate & Save Tax Now
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ TAX CALCULATOR (image-1 style) ══════════════════════════════════════ */}
+      <section id="tax" className="py-20 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <span className="inline-block text-xs font-semibold tracking-[0.15em] uppercase bg-secondary text-primary px-4 py-1.5 rounded-full mb-4">80G Tax Benefit</span>
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground font-normal mb-4">Calculate Your Tax Savings</h2>
+            <p className="text-lg text-muted-foreground max-w-xl mx-auto">Donations to Visrambha Foundation qualify for a 50% deduction under Section 80G of the Income Tax Act.</p>
+          </div>
+
+          <div className="bg-card border border-border rounded-3xl overflow-hidden shadow-sm">
+            {/* Freq toggle */}
+            {/* <div className="p-6 pb-0">
+              <div className="inline-flex bg-muted rounded-xl p-1 gap-1">
+                {(["once", "monthly"] as const).map((f) => (
+                  <button key={f} onClick={() => setTaxFreq(f)}
+                    className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${taxFreq === f ? "bg-white text-primary shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>
+                    {f === "once" ? "One-time" : "Monthly"}
+                  </button>
+                ))}
+              </div>
+            </div> */}
+
+            <div className="grid lg:grid-cols-5 gap-0">
+              <style>{`
+        .rng{-webkit-appearance:none;appearance:none;outline:none;height:6px;border-radius:3px;cursor:pointer;}
+        .rng::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:#1D4E5F;border:3px solid white;box-shadow:0 2px 8px rgba(29,78,95,.35);cursor:pointer;}
+        .rng::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#1D4E5F;border:3px solid white;cursor:pointer;}
+      `}</style>
+              {/* Left – sliders */}
+              <div className="lg:col-span-3 p-6 flex flex-col gap-7">
+                {/* Donation Amount slider */}
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm font-medium text-foreground">
+                      {taxFreq === "monthly" ? "Monthly Donation" : "Donation Amount"}
+                    </span>
+                    <span className="bg-secondary text-primary font-bold text-sm px-3 py-1 rounded-lg">
+                      {fmtINR(donAmount2)}
+                    </span>
+                  </div>
+                  <input type="range" min={500} max={500000} step={500} value={donAmount2}
+                    onChange={(e) => setDonAmount2(Number(e.target.value))}
+                    className="rng w-full" style={sliderStyle(donAmount2, 500, 500000)} />
+                  <div className="flex justify-between text-xs text-muted-foreground mt-1.5">
+                    <span>₹500</span><span>₹5L</span>
+                  </div>
+                </div>
+
+                {/* 80G Deduction — static info bar */}
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm font-medium text-foreground">80G Deduction Rate</span>
+                    <span className="bg-secondary text-primary font-bold text-sm px-3 py-1 rounded-lg">50%</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-muted rounded-full relative">
+                    <div className="absolute inset-y-0 left-0 w-1/2 bg-primary rounded-full" />
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1.5">Fixed — 50% of your annual donation qualifies as deduction</p>
+                </div>
+
+                {/* Tax Slab */}
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm font-medium text-foreground">Your Tax Slab</span>
+                    <span className="bg-secondary text-primary font-bold text-sm px-3 py-1 rounded-lg">{taxSlab2}%</span>
+                  </div>
+                  <div className="flex gap-2">
+                    {SLABS.map((s) => (
+                      <button key={s.rate} onClick={() => setTaxSlab2(s.rate)}
+                        className={`flex-1 flex flex-col items-center py-2.5 rounded-xl border text-xs font-semibold transition-all ${taxSlab2 === s.rate ? "bg-primary text-white border-primary" : "border-border text-muted-foreground hover:border-primary/40 hover:text-primary"}`}>
+                        {s.label}
+                        <span className={`text-[10px] font-normal mt-0.5 ${taxSlab2 === s.rate ? "text-white/70" : "text-muted-foreground"}`}>{s.desc}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Summary */}
+
+                <div className="border-t border-border pt-5 flex flex-col gap-2.5">
+                  {[
+                    { label: taxFreq === "monthly" ? "Annual Donation" : "Donation Amount", value: `₹${annualBase2.toLocaleString("en-IN")}`, dim: false },
+                    { label: "80G Deduction (50%)", value: `₹${deduction2.toLocaleString("en-IN")}`, dim: false },
+                    { label: `Tax Saved (${taxSlab2}%)`, value: `₹${taxSaved2.toLocaleString("en-IN")}`, dim: false },
+                    { label: taxFreq === "monthly" ? "Net Annual Cost" : "Net Cost to You", value: `₹${netCost2.toLocaleString("en-IN")}`, dim: true },
+                  ].map((row) => (
+                    <div key={row.label} className={`flex items-center justify-between ${row.dim ? "pt-2 border-t border-border" : ""}`}>
+                      <span className={`text-sm ${row.dim ? "font-semibold text-foreground" : "text-muted-foreground"}`}>{row.label}</span>
+                      <span className={`font-bold ${row.dim ? "text-lg text-primary" : "text-foreground"}`}>{row.value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <a href="#donate"
+                  className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground font-bold py-3.5 rounded-2xl hover:bg-primary/90 transition-colors text-sm">
+                  <Heart className="w-4 h-4" /> Donate &amp; Save Tax Now
+                </a>
+                {/* <p className="text-[11px] text-muted-foreground -mt-4 text-center">* Applicable under the Old Tax Regime only.</p> */}
+              </div>
+
+              {/* Right – donut chart */}
+              <div className="lg:col-span-2 bg-muted/40 border-l border-border p-6 flex flex-col items-center justify-center gap-4">
+                <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground">
+                  <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full bg-[#D9E6EA] inline-block" /> Net Cost</span>
+                  <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full bg-primary inline-block" /> Tax Saved</span>
+                </div>
+                <ResponsiveContainer width="100%" height={220}>
+                  <PieChart>
+                    <Pie data={chartData} cx="50%" cy="50%" innerRadius={58} outerRadius={95} paddingAngle={2} dataKey="value" startAngle={90} endAngle={-270}>
+                      {chartData.map((d, i) => <Cell key={i} fill={d.color} strokeWidth={0} />)}
+                    </Pie>
+                    <Tooltip formatter={(v: number) => [`₹${v.toLocaleString("en-IN")}`, ""]}
+                      contentStyle={{ background: "#fff", border: "1px solid #EDE9E3", borderRadius: "10px", fontSize: "12px" }} />
+                  </PieChart>
+                </ResponsiveContainer>
+                {taxSaved2 > 0 && (
+                  <div className="text-center">
+                    <p className="text-xs text-muted-foreground">You save</p>
+                    <p className="text-2xl font-bold text-primary">₹{taxSaved2.toLocaleString("en-IN")}</p>
+                    <p className="text-xs text-muted-foreground">in taxes annually</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+
+  )
+}
+
+
 // ─── CONTACT ─────────────────────────────────────────────────────────────────
 
 function ContactSection() {
@@ -1530,7 +1826,7 @@ function ContactSection() {
   return (
     <section id="contact" className="py-28 bg-background">
       <div className="max-w-7xl mx-auto px-6">
-        <SectionTag number="09" label="Contact Us" />
+        <SectionTag number="04" label="Contact Us" />
         <div className="grid lg:grid-cols-2 gap-16">
           {/* Info side */}
           <div>
@@ -1771,9 +2067,9 @@ function Footer() {
             </h4>
             <ul className="space-y-3 text-sm text-white/55">
               {[
-                "About Us", "Our Programs", "Impact Report",
-                "Success Stories", "Events", "Gallery",
-                "Annual Reports", "Contact Us",
+                "About Us", "Our Programs",
+                "Events",
+                "Contact Us",
               ].map(l => (
                 <li key={l}>
                   <a href="#" className="hover:text-accent transition-colors">{l}</a>
@@ -1793,28 +2089,6 @@ function Footer() {
             <p className="text-white/55 text-xs mb-4 leading-relaxed">
               Quarterly impact stories, upcoming events, and field updates delivered to your inbox.
             </p>
-            {subscribed ? (
-              <div className="flex items-center gap-2 text-accent text-sm">
-                <CheckCircle className="w-4 h-4" />
-                <span>You are subscribed!</span>
-              </div>
-            ) : (
-              <div className="flex gap-2 mb-7">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  placeholder="your@email.com"
-                  className="flex-1 px-3 py-2.5 rounded-xl bg-white/8 border border-white/15 text-white placeholder:text-white/35 text-xs focus:outline-none focus:border-accent/50 transition-colors"
-                />
-                <button
-                  onClick={() => email && setSubscribed(true)}
-                  className="px-4 py-2.5 bg-accent rounded-xl text-white font-semibold text-xs hover:bg-accent/90 transition-colors whitespace-nowrap"
-                >
-                  Join
-                </button>
-              </div>
-            )}
             <h4
               className="font-bold text-sm mb-3 text-white uppercase tracking-widest"
               style={{ fontFamily: "var(--font-family-display)" }}
@@ -1843,19 +2117,21 @@ function Footer() {
 // ─── APP ─────────────────────────────────────────────────────────────────────
 
 export default function App() {
+
   return (
     <div className="min-h-screen font-sans" style={{ fontFamily: "var(--font-family-sans)" }}>
       <Navbar />
       <main>
         <HeroSection />
-        <AboutSection />
-        <ProgramsSection />
-        <ImpactSection />
-        <TestimonialsSection />
-        <GallerySection />
-        <EventsSection />
         <GetInvolvedSection />
-        <TransparencySection />
+        <AboutSection />
+        <TaxCalculator />
+        <ProgramsSection />
+        {/* <ImpactSection /> */}
+        {/* <TestimonialsSection /> */}
+        {/* <GallerySection /> */}
+        <EventsSection />
+        {/* <TransparencySection /> */}
         <ContactSection />
       </main>
       <Footer />
