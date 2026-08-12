@@ -24,6 +24,69 @@ const SLABS = [
   { label: "30% Slab", desc: "Income above ₹10L", rate: 30 },
 ];
 
+const founders = [
+  {
+    initials: "MR",
+    name: "Margaret Reid",
+    role: "Chief Executive Officer",
+    bio: "20 years structuring multi-generational trusts across four continents.",
+    cardBg: "linear-gradient(150deg, #1B5E5E 0%, #1F6F6F 60%, #256060 100%)",
+    badgeBg: "#C9A84C22",
+    badgeColor: "#C9A84C",
+    borderColor: "#C9A84C",
+    glowColor: "#1B5E5E55",
+    textName: "#fff",
+    textRole: "#C9A84C",
+    textBio: "#A8CECE",
+    ghostColor: "#C9A84C",
+  },
+  {
+    initials: "JO",
+    name: "James Okafor",
+    role: "Chief Investment Officer",
+    bio: "Former sovereign wealth advisor. Steers capital with a long-horizon mindset.",
+    cardBg: "linear-gradient(150deg, #153D3D 0%, #1A5252 60%, #1E5858 100%)",
+    badgeBg: "#C9A84C22",
+    badgeColor: "#C9A84C",
+    borderColor: "#C9A84C",
+    glowColor: "#153D3D55",
+    textName: "#fff",
+    textRole: "#C9A84C",
+    textBio: "#96BEBE",
+    ghostColor: "#C9A84C",
+  },
+  {
+    initials: "SL",
+    name: "Sofia Lindqvist",
+    role: "Head of Legal & Compliance",
+    bio: "Expert in cross-border fiduciary law and regulatory strategy.",
+    cardBg: "linear-gradient(150deg, #1B5E5E 0%, #22686A 60%, #1A5A5C 100%)",
+    badgeBg: "#C9A84C22",
+    badgeColor: "#C9A84C",
+    borderColor: "#C9A84C",
+    glowColor: "#22686A55",
+    textName: "#fff",
+    textRole: "#C9A84C",
+    textBio: "#A8CECE",
+    ghostColor: "#C9A84C",
+  },
+  {
+    initials: "DM",
+    name: "Daniel Marsh",
+    role: "Director of Client Relations",
+    bio: "Builds trust through clarity — every client relationship starts with listening.",
+    cardBg: "linear-gradient(150deg, #163C3C 0%, #1C5050 60%, #1F5A5A 100%)",
+    badgeBg: "#C9A84C22",
+    badgeColor: "#C9A84C",
+    borderColor: "#C9A84C",
+    glowColor: "#1C505055",
+    textName: "#fff",
+    textRole: "#C9A84C",
+    textBio: "#96BEBE",
+    ghostColor: "#C9A84C",
+  },
+];
+
 const NAV_LINKS = [
   { label: "About", href: "#about" },
   { label: "Programs", href: "#programs" },
@@ -510,211 +573,104 @@ function AboutSection() {
         </div>
 
         {/* Founders */}
-        <div className="">
-          <h3
-            className="text-3xl font-bold text-foreground mb-12 text-center"
-            style={{ fontFamily: "var(--font-family-display)" }}
-          >
-            Meet Our Founders
-          </h3>
+        <section
+          style={{ fontFamily: "'Inter', sans-serif" }}
+          className="min-h-screen px-4 sm:px-8 py-14 sm:py-20 flex flex-col items-center relative overflow-hidden"
+          style={{
+            background: "radial-gradient(ellipse 70% 50% at 20% 20%, #0D3535 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, #0A2828 0%, transparent 55%), #0B1F1F",
+          }}
+        >
+          <div className="w-full max-w-2xl">
+            {/* Decorative glow orbs */}
+            <div className="absolute top-0 left-1/4 w-72 h-72 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, #C47F0015 0%, transparent 70%)", filter: "blur(40px)" }} />
+            <div className="absolute bottom-10 right-1/4 w-56 h-56 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, #E8920012 0%, transparent 70%)", filter: "blur(32px)" }} />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {FOUNDERS.map((f, index) => (
-              <div
-                key={f.name}
-                className="
-          group relative overflow-hidden
-          bg-card
-          border border-border
-          rounded-[2rem]
-          p-7
-          transition-all duration-500
-          hover:-translate-y-2
-          hover:shadow-[0_24px_60px_rgba(0,0,0,0.10)]
-        "
-              >
-                {/* Top-right decorative circle */}
-                <div
-                  className="
-            absolute -top-16 -right-16
-            w-40 h-40
-            rounded-full
-            bg-[#C99A32]/10
-            transition-transform duration-700
-            group-hover:scale-125
-          "
-                />
-
-                {/* Bottom-left decorative circle */}
-                <div
-                  className="
-            absolute -bottom-20 -left-20
-            w-44 h-44
-            rounded-full
-            bg-primary/5
-          "
-                />
-
-                {/* Founder number */}
-                <div
-                  className="
-            absolute top-6 right-7
-            text-5xl
-            font-bold
-            text-foreground/[0.04]
-            select-none
-          "
+            {/* Header */}
+            <div className="mb-10 sm:mb-14 relative">
+              <p className="text-[#C9A84C] text-[10px] tracking-[0.3em] uppercase font-medium mb-3 opacity-80">
+                The people behind it
+              </p>
+              <div className="flex items-end gap-4">
+                <h2
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  className="text-[#F5E6C8] text-3xl sm:text-4xl leading-tight"
                 >
-                  0{index + 1}
-                </div>
-
-                {/* Founder Monogram */}
-                <div className="relative mb-7 flex justify-center">
-                  <div
-                    className="
-              relative
-              w-28 h-28
-              rounded-full
-              flex items-center justify-center
-              bg-gradient-to-br
-              from-[#D4A63A]
-              to-[#B98520]
-              text-white
-              shadow-[0_12px_30px_rgba(180,130,30,0.25)]
-              border-[6px]
-              border-[#F8F3E8]
-              transition-all duration-500
-              group-hover:scale-105
-              group-hover:shadow-[0_16px_40px_rgba(180,130,30,0.35)]
-            "
-                  >
-                    <span
-                      className="
-                text-3xl
-                font-semibold
-                tracking-wide
-              "
-                    >
-                      {f.initials}
-                    </span>
-
-                    {/* Small decorative ring */}
-                    <div
-                      className="
-                absolute inset-[-5px]
-                rounded-full
-                border border-[#C99A32]/30
-                pointer-events-none
-              "
-                    />
-                  </div>
-                </div>
-
-                {/* Role */}
-                <div className="relative flex justify-center mb-5">
-                  <span
-                    className="
-              inline-flex
-              items-center
-              px-3.5 py-1.5
-              rounded-full
-              bg-[#C99A32]/10
-              text-[#B98520]
-              text-xs
-              font-semibold
-              border border-[#C99A32]/20
-            "
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C99A32] mr-2" />
-                    {f.role}
-                  </span>
-                </div>
-
-                {/* Name */}
-                <h4
-                  className="
-            relative
-            text-xl
-            font-bold
-            text-foreground
-            text-center
-            mb-4
-          "
-                  style={{ fontFamily: "var(--font-family-display)" }}
-                >
-                  {f.name}
-                </h4>
-
-                {/* Bio */}
-                <p
-                  className="
-            relative
-            text-muted-foreground
-            text-sm
-            leading-6
-            text-center
-            min-h-[120px]
-          "
-                >
-                  {f.bio}
-                </p>
-
-                {/* Bottom section */}
-                <div
-                  className="
-            relative
-            mt-6
-            pt-5
-            border-t
-            border-border
-            flex
-            items-center
-            justify-center
-            gap-2
-          "
-                >
-                  <div
-                    className="
-              h-1
-              w-8
-              rounded-full
-              bg-[#C99A32]
-              transition-all
-              duration-500
-              group-hover:w-12
-            "
-                  />
-
-                  <span className="text-xs text-muted-foreground">
-                    Visrambha Foundation
-                  </span>
-                </div>
-
-                {/* LinkedIn */}
-                <div
-                  className="
-            absolute
-            top-6
-            left-6
-            w-8 h-8
-            rounded-full
-            bg-background
-            border border-border
-            flex items-center justify-center
-            opacity-0
-            scale-75
-            group-hover:opacity-100
-            group-hover:scale-100
-            transition-all duration-300
-            shadow-sm
-          "
-                >
-                  <Linkedin className="w-4 h-4 text-primary" />
-                </div>
+                  Meet our founders
+                </h2>
+                <div className="mb-1.5 h-px flex-1 bg-gradient-to-r from-[#C9A84C]/50 to-transparent" />
               </div>
-            ))}
+              <p className="mt-3 text-[#A08860] text-sm leading-relaxed max-w-sm font-light">
+                Four decades of combined expertise, united by one purpose — your legacy.
+              </p>
+            </div>
+
+            {/* Cards grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+              {founders.map((f) => (
+                <div
+                  key={f.name}
+                  className="group relative rounded-2xl p-5 sm:p-6 border transition-all duration-300 hover:-translate-y-1"
+                  style={{
+                    background: f.cardBg,
+                    borderColor: f.borderColor + "60",
+                    boxShadow: `0 4px 20px ${f.glowColor}`,
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLDivElement).style.boxShadow = `0 12px 40px ${f.glowColor}, 0 2px 8px rgba(0,0,0,0.2)`;
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLDivElement).style.boxShadow = `0 4px 20px ${f.glowColor}`;
+                  }}
+                >
+                  {/* Corner ghost letter */}
+                  <div
+                    className="absolute top-3 right-4 text-[64px] sm:text-[72px] leading-none font-bold select-none pointer-events-none opacity-[0.12]"
+                    style={{
+                      fontFamily: "'Playfair Display', serif",
+                      color: f.ghostColor,
+                    }}
+                  >
+                    {f.initials[0]}
+                  </div>
+
+                  {/* Badge */}
+                  <div
+                    className="relative w-11 h-11 rounded-xl flex items-center justify-center text-xs font-semibold tracking-widest mb-5 backdrop-blur-sm"
+                    style={{ background: f.badgeBg, color: f.badgeColor, border: "1.5px solid rgba(255,255,255,0.3)" }}
+                  >
+                    {f.initials}
+                  </div>
+
+                  {/* Text */}
+                  <h3
+                    className="text-[15px] font-semibold mb-0.5 leading-snug"
+                    style={{ color: f.textName }}
+                  >
+                    {f.name}
+                  </h3>
+                  <p
+                    className="text-[10px] tracking-[0.18em] uppercase font-medium mb-3"
+                    style={{ color: f.textRole }}
+                  >
+                    {f.role}
+                  </p>
+                  <p className="text-[13px] sm:text-sm leading-relaxed font-light" style={{ color: f.textBio }}>
+                    {f.bio}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Footer line */}
+            <div className="mt-10 sm:mt-12 flex items-center gap-4 relative">
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[#C9A84C]/40" />
+              <p className="text-[#8A7040] text-[11px] tracking-widest uppercase whitespace-nowrap">
+                 years of combined experience
+              </p>
+              <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[#C9A84C]/40" />
+            </div>
           </div>
-        </div>
+        </section>
 
       </div>
     </section>
@@ -1540,145 +1496,7 @@ function TaxCalculator() {
 
   return (
     <div>
-      <section id="tax" className="bg-background">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-14">
-            <span className="inline-block text-xs font-semibold tracking-[0.15em] uppercase bg-secondary text-primary px-4 py-1.5 rounded-full mb-4">
-              80G Tax Benefit
-            </span>
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground font-normal mb-4">
-              Calculate Your Tax Savings
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-              Donating to Visrambha Foundation qualifies for a 50% deduction under Section 80G of the Income Tax Act.
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* Calculator */}
-            <div className="bg-card border border-border rounded-3xl p-8 shadow-sm">
-              <div className="flex items-center gap-3 mb-7">
-                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center">
-                  <Calculator className="w-5 h-5 text-primary" />
-                </div>
-                <h3 className="font-display text-xl text-foreground">Tax Benefit Calculator</h3>
-              </div>
-
-              {/* Donation Input */}
-              <div className="mb-5">
-                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 block">
-                  Your Donation Amount (₹)
-                </label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">₹</span>
-                  <input
-                    type="number"
-                    value={taxInput}
-                    onChange={(e) => setTaxInput(e.target.value)}
-                    placeholder="Enter amount"
-                    className="w-full bg-input-background rounded-xl pl-8 pr-4 py-3.5 text-base font-semibold text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/25" />
-                </div>
-              </div>
-
-              {/* Slab selector */}
-              <div className="mb-7">
-                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 block">
-                  Your Income Tax Slab
-                </label>
-                <div className="flex flex-col gap-2">
-                  {SLABS.map((slab) => (
-                    <button key={slab.rate} onClick={() => setTaxSlab(slab.rate)}
-                      className={`flex items-center justify-between px-4 py-3 rounded-xl border text-left transition-all ${taxSlab === slab.rate ? "bg-secondary border-primary/30 text-primary" : "border-border text-foreground hover:border-primary/25"}`}>
-                      <span className="text-sm font-semibold">{slab.label}</span>
-                      <span className="text-xs text-muted-foreground">{slab.desc}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Results */}
-              <div className="bg-primary rounded-2xl p-5 text-white">
-                <p className="text-xs font-semibold uppercase tracking-wider text-white/50 mb-4">Your Benefit Breakdown</p>
-                <div className="flex flex-col gap-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-white/70">Donation Amount</span>
-                    <span className="font-semibold">₹{taxValue.toLocaleString("en-IN")}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-white/70">80G Deduction (50%)</span>
-                    <span className="font-semibold text-accent">₹{deduction.toLocaleString("en-IN")}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-white/70">Tax Saved ({taxSlab}% slab)</span>
-                    <span className="font-semibold text-accent">₹{taxSaved.toLocaleString("en-IN")}</span>
-                  </div>
-                  <div className="border-t border-white/15 pt-3 flex items-center justify-between">
-                    <span className="text-sm font-semibold">Your Net Cost</span>
-                    <span className="text-xl font-bold text-accent">₹{netCost.toLocaleString("en-IN")}</span>
-                  </div>
-                </div>
-                {taxValue > 0 && (
-                  <div className="mt-4 bg-accent/20 rounded-xl px-4 py-3 text-center">
-                    <p className="text-xs text-white/80">You save <span className="font-bold text-accent">₹{taxSaved.toLocaleString("en-IN")}</span> in taxes.{" "}
-                      A donation of ₹{taxValue.toLocaleString("en-IN")} effectively costs you only <span className="font-bold text-accent">₹{netCost.toLocaleString("en-IN")}</span>!</p>
-                  </div>
-                )}
-              </div>
-              {/* <p className="text-xs text-muted-foreground mt-3 text-center">
-              * Applicable under the Old Tax Regime only. Consult your CA for exact savings.
-            </p> */}
-            </div>
-
-            {/* How 80G Works */}
-            <div className="flex flex-col gap-5">
-              <div className="bg-card border border-border rounded-3xl p-7">
-                <h3 className="font-display text-xl text-foreground mb-5">How Section 80G Works</h3>
-                <div className="flex flex-col gap-5">
-                  {[
-                    { step: "01", title: "Make Your Donation", desc: "Donate online via UPI, credit/debit card, or net banking. Any amount, anytime." },
-                    { step: "02", title: "Receive 80G Certificate", desc: "We issue a digitally signed 80G receipt to your email within 24 hours of your donation." },
-                    { step: "03", title: "Claim Deduction on ITR", desc: "Enter the donation details under Section 80G while filing your Income Tax Return." },
-                    { step: "04", title: "Save on Your Taxes", desc: "50% of your donation is deducted from your taxable income, reducing your tax liability." },
-                  ].map((item) => (
-                    <div key={item.step} className="flex gap-4">
-                      <div className="w-9 h-9 rounded-xl bg-secondary flex items-center justify-center text-xs font-bold text-primary shrink-0">
-                        {item.step}
-                      </div>
-                      <div>
-                        <p className="font-semibold text-foreground text-sm mb-0.5">{item.title}</p>
-                        <p className="text-sm text-muted-foreground">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-primary rounded-2xl p-6 text-white">
-                <div className="flex items-start gap-3 mb-4">
-                  <CheckCircle className="w-5 h-5 text-accent shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold">80G Certified Foundation</p>
-                    <p className="text-xs text-white/60 mt-0.5">80G Registration No: DIT(E)/80G/Pune/2014-15/005</p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  {["12A Registered", "FCRA Certified", "NITI Aayog Listed", "CSR-1 Filed"].map((badge) => (
-                    <div key={badge} className="bg-white/10 rounded-xl px-3 py-2 text-xs text-white/75 font-medium text-center">
-                      {badge}
-                    </div>
-                  ))}
-                </div>
-                <a href="#get-involved"
-                  className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground font-semibold text-sm px-6 py-3 rounded-xl hover:bg-accent/90 transition-colors">
-                  <Heart className="w-4 h-4" /> Donate & Save Tax Now
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ TAX CALCULATOR (image-1 style) ══════════════════════════════════════ */}
+        {/* ═══ TAX CALCULATOR (image-1 style) ══════════════════════════════════════ */}
       <section id="tax" className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
@@ -1842,9 +1660,9 @@ function ContactSection() {
 
             <div className="space-y-7 mb-12">
               {[
-                { Icon: MapPin, label: "Office", val: "4th Floor, Sunrise Towers, Baner Road, Pune 411045, Maharashtra" },
-                { Icon: Phone, label: "Phone", val: "+91 20 4567 8900" },
-                { Icon: Mail, label: "Email", val: "connect@visrambha.org" },
+                { Icon: MapPin, label: "Office", val: "No. 23, 3rd Floor, 14 'A’ Main Road, E-Block, Sahakar Nagar, Bengaluru - 560092" },
+                { Icon: Phone, label: "Phone", val: "+91  8951621158 | 7676861953" },
+                { Icon: Mail, label: "Email", val: "visrambhafoundation@gmail.com" },
                 { Icon: Globe, label: "Website", val: "www.visrambha.org" },
               ].map(({ Icon, label, val }) => (
                 <div key={label} className="flex items-start gap-4">
