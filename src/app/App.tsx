@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import {
-  Menu, X, Heart, BookOpen, Users, School, MapPin,
+  Menu, X, Heart, BookOpen, Users, School, MapPin, HeartPulse,
   ChevronLeft, ChevronRight, Download, Mail, Phone,
   Facebook, Twitter, Instagram, Linkedin, Youtube,
   GraduationCap, Laptop, Lightbulb, Award, BarChart2,
@@ -15,8 +15,31 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recha
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 import logoImg from "@/imports/Screenshot_2026-08-07_171608.png";
 import FloatingActions from "@/app/components/ui/FloatingActions";
-// ─── DATA ────────────────────────────────────────────────────────────────────
+import scanner from "../assets/hero-section-images/scanner.png";
 
+// ─── DATA ────────────────────────────────────────────────────────────────────
+const events = [
+  {
+    category: "Education",
+    categoryColor: "#1B6B6B",
+    image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=480&h=280&fit=crop&auto=format",
+    title: "Education Support – BR Hills",
+    desc: "Supporting children in the BR Hills region with access to education, learning resources, and opportunities for a brighter future.",
+    raised: 0,
+    goal: 0,
+    progress: 0,
+  },
+  {
+    category: "Medical Relief",
+    categoryColor: "#C9A84C",
+    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=480&h=280&fit=crop&auto=format",
+    title: "Medical Relief – BR Hills",
+    desc: "Providing essential medical assistance and healthcare support to underserved communities in the BR Hills region.",
+    raised: 0,
+    goal: 0,
+    progress: 0,
+  },
+];
 // // Tax calculator
 const SLABS = [
   { label: "5% Slab", desc: "Income ₹2.5L – ₹5L", rate: 5 },
@@ -24,12 +47,18 @@ const SLABS = [
   { label: "30% Slab", desc: "Income above ₹10L", rate: 30 },
 ];
 
+const avatarUrls = [
+  "https://images.unsplash.com/photo-1628717341663-0007b0ee2597?w=48&h=48&fit=crop&auto=format",
+  "https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?w=48&h=48&fit=crop&auto=format",
+  "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=48&h=48&fit=crop&auto=format",
+];
+
 const founders = [
   {
-    initials: "MR",
-    name: "Margaret Reid",
-    role: "Chief Executive Officer",
-    bio: "20 years structuring multi-generational trusts across four continents.",
+    initials: "SP",
+    name: "Sunil Paswan",
+    role: "Trust Member · DJ & Event Management",
+    bio: "Brings creativity, event coordination, and entertainment expertise to support the Foundation's events and community initiatives.",
     cardBg: "linear-gradient(150deg, #1B5E5E 0%, #1F6F6F 60%, #256060 100%)",
     badgeBg: "#C9A84C22",
     badgeColor: "#C9A84C",
@@ -41,10 +70,10 @@ const founders = [
     ghostColor: "#C9A84C",
   },
   {
-    initials: "JO",
-    name: "James Okafor",
-    role: "Chief Investment Officer",
-    bio: "Former sovereign wealth advisor. Steers capital with a long-horizon mindset.",
+    initials: "SB",
+    name: "Supriya B M",
+    role: "Trust Member · Event Management",
+    bio: "Contributes her event management and coordination skills to help organize meaningful Foundation activities and community programs.",
     cardBg: "linear-gradient(150deg, #153D3D 0%, #1A5252 60%, #1E5858 100%)",
     badgeBg: "#C9A84C22",
     badgeColor: "#C9A84C",
@@ -56,10 +85,10 @@ const founders = [
     ghostColor: "#C9A84C",
   },
   {
-    initials: "SL",
-    name: "Sofia Lindqvist",
-    role: "Head of Legal & Compliance",
-    bio: "Expert in cross-border fiduciary law and regulatory strategy.",
+    initials: "DG",
+    name: "Darshan G",
+    role: "Trust Member · Interior Designer",
+    bio: "Brings creative design expertise and a thoughtful approach to spaces, events, and initiatives that support the Foundation's mission.",
     cardBg: "linear-gradient(150deg, #1B5E5E 0%, #22686A 60%, #1A5A5C 100%)",
     badgeBg: "#C9A84C22",
     badgeColor: "#C9A84C",
@@ -71,10 +100,10 @@ const founders = [
     ghostColor: "#C9A84C",
   },
   {
-    initials: "DM",
-    name: "Daniel Marsh",
-    role: "Director of Client Relations",
-    bio: "Builds trust through clarity — every client relationship starts with listening.",
+    initials: "KK",
+    name: "Kiran Kumar G M",
+    role: "Founder · Import & Export",
+    bio: "Founder of Visrambha Foundation, bringing his professional experience and vision towards creating meaningful opportunities for children and underserved communities.",
     cardBg: "linear-gradient(150deg, #163C3C 0%, #1C5050 60%, #1F5A5A 100%)",
     badgeBg: "#C9A84C22",
     badgeColor: "#C9A84C",
@@ -100,28 +129,28 @@ const NAV_LINKS = [
 
 const FOUNDERS = [
   {
-    name: "Dr. Ramesh Sharma",
-    role: "Founder & Chairman",
-    initials: "RS",
-    bio: "A retired IAS officer with 35 years of public service, Dr. Sharma founded Visrambha to address educational inequalities in rural India.",
+    name: "Sunil Paswan",
+    role: "Trust Member – DJ & Event Management",
+    initials: "SP",
+    bio: "An experienced professional in DJ and event management, Sunil contributes his creativity, coordination skills, and event expertise to support the Foundation's initiatives and community programs.",
   },
   {
-    name: "Priya Menon",
-    role: "Co-Founder & CEO",
-    initials: "PM",
-    bio: "Former UNICEF education specialist, Priya brings 20 years of international development experience to drive the Foundation's strategic vision.",
+    name: "Supriya B M",
+    role: "Trust Member – Event Management",
+    initials: "SB",
+    bio: "With experience in event management, Supriya plays an active role in organizing and coordinating Foundation activities, helping create meaningful experiences for the communities we serve.",
   },
   {
-    name: "Arun Krishnamurthy",
-    role: "Co-Founder & CTO",
-    initials: "AK",
-    bio: "Tech entrepreneur turned social activist, Arun leads digital learning initiatives and the Foundation's technology infrastructure.",
+    name: "Darshan G",
+    role: "Trust Member – Interior Designer",
+    initials: "DG",
+    bio: "An interior designer with a creative and practical approach, Darshan contributes his design expertise and ideas to support the Foundation's spaces, events, and community initiatives.",
   },
   {
-    name: "Ananya Rao",
-    role: "Co-Founder & COO",
-    initials: "AR",
-    bio: "A development professional focused on community engagement, Ananya oversees partnerships and programs that create lasting social impact.",
+    name: "Kiran Kumar G M",
+    role: "Founder – Import & Export",
+    initials: "KK",
+    bio: "A professional in the import and export sector, Kiran Kumar G M founded Visrambha Foundation with a vision to contribute to society and create meaningful opportunities for children and underserved communities.",
   },
 ];
 
@@ -140,12 +169,24 @@ const sliderStyle = (v: number, min: number, max: number) => ({
 });
 
 const PROGRAMS = [
-  { icon: BookOpen, title: "Education Support", desc: "Quality learning materials, after-school tutoring, and academic mentorship for students in underserved communities.", color: "primary" },
-  { icon: Award, title: "Scholarships", desc: "Merit and need-based scholarships enabling bright students from low-income families to pursue higher education.", color: "accent" },
-  { icon: School, title: "School Infrastructure", desc: "Building and renovating classrooms, libraries, and sanitation to create safe, inspiring learning environments.", color: "primary" },
-  { icon: Laptop, title: "Digital Learning", desc: "Equipping rural schools with computers, internet connectivity, and structured digital literacy programs.", color: "accent" },
-  { icon: Lightbulb, title: "Skill Development", desc: "Vocational training programs preparing youth with market-relevant skills for sustainable livelihoods.", color: "primary" },
-  { icon: GraduationCap, title: "Teacher Training", desc: "Professional development workshops enhancing teaching quality and pedagogy across 200+ partner schools.", color: "accent" },
+  {
+    icon: BookOpen,
+    title: "Education",
+    desc: "Supporting children and underserved communities through access to quality education, learning opportunities, and educational resources.",
+    color: "primary",
+  },
+  {
+    icon: HeartPulse,
+    title: "Medical Relief",
+    desc: "Providing essential medical support and relief to individuals and families in need, helping improve access to basic healthcare.",
+    color: "accent",
+  },
+  {
+    icon: Building2,
+    title: "Urban & Rural Development",
+    desc: "Working towards sustainable development and improved living conditions in both urban and rural communities through meaningful social initiatives.",
+    color: "primary",
+  },
 ];
 
 const STATS = [
@@ -323,10 +364,10 @@ function Navbar() {
             className="w-11 h-11 object-contain"
           />
           <div className="hidden sm:block leading-none">
-            <div className={`font-display font-bold text-base leading-tight tracking-wide ${scrolled ? "text-primary" : "text-white"}`}>
+            <div className={`font-display font-bold text-base leading-tight tracking-wide ${scrolled ? "text-primary" : "text-primary"}`}>
               VISRAMBHA
             </div>
-            <div className={`text-[10px] tracking-widest uppercase mt-0.5 ${scrolled ? "text-muted-foreground" : "text-white/60"}`}>
+            <div className={`text-[10px] tracking-widest uppercase mt-0.5 ${scrolled ? "text-muted-foreground" : "text-primary/60"}`}>
               Foundation
             </div>
           </div>
@@ -337,7 +378,7 @@ function Navbar() {
             <a
               key={l.label}
               href={l.href}
-              className={`text-sm font-medium transition-colors hover:text-accent ${scrolled ? "text-foreground" : "text-white/85"
+              className={`text-sm font-medium transition-colors hover:text-accent ${scrolled ? "text-foreground" : "text-primary/85"
                 }`}
             >
               {l.label}
@@ -391,36 +432,43 @@ function Navbar() {
 }
 
 // ─── HERO ────────────────────────────────────────────────────────────────────
-
 function HeroSection() {
   return (
-    <section id="home" className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-primary">
-      <div className="absolute inset-0">
-        <img
-          src="https://images.unsplash.com/flagged/photo-1574098335395-18cf525e45d6?w=1920&h=1080&fit=crop&auto=format"
-          alt="Boy learning in a rural classroom"
-          className="w-full h-full object-cover opacity-30"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#091f22]/95 via-[#1d5054]/85 to-[#1d5054]/55" />
-      </div>
+    <section
+      className="px-5 sm:px-10 lg:px-16 pt-14 pb-10 overflow-hidden"
+      style={{
+        background: "linear-gradient(135deg, #FDF8EE 0%, #F7F2E4 50%, #F0EDD8 100%)",
+      }}
+    >
+      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-44 w-full">
-        <div className="max-w-3xl">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="h-px w-12 bg-accent" />
-            <span className="text-accent font-semibold tracking-widest text-xs uppercase">
-              Visrambha Foundation
-            </span>
-          </div>
-          <h1
-            className="font-display text-5xl md:text-6xl lg:text-[4.5rem] font-bold text-white leading-[1.08] mb-8"
-            style={{ fontFamily: "var(--font-family-display)" }}
+        {/* Left */}
+        <div>
+          <span
+            className="inline-block text-[10px] tracking-[0.28em] uppercase font-semibold px-3 py-1.5 rounded-full mb-6"
+            style={{ background: "#1B6B6B18", color: "#1B6B6B" }}
           >
-            Every Child Deserves the Opportunity to Learn.
+            Visrambha Foundation · Est. 2014
+          </span>
+
+          <h1
+            style={{ fontFamily: "'Playfair Display', serif", color: "#0F2A2A" }}
+            className="text-4xl sm:text-5xl leading-[1.18] font-semibold mb-5"
+          >
+            Uniting for Change,{" "}
+            <span style={{ color: "#C9A84C", fontStyle: "italic" }}>
+              Building
+            </span>{" "}
+            a Brighter Future
           </h1>
-          <p className="text-white/72 text-xl leading-relaxed mb-10 max-w-2xl">
+
+          <p
+            style={{ fontFamily: "'Inter', sans-serif", color: "#4A6060" }}
+            className="text-base leading-relaxed mb-8 max-w-sm font-light"
+          >
             We work alongside communities across rural India to ensure every child has access to quality education, mentorship, and the tools they need to build a brighter future.
           </p>
+
           <div className="flex flex-wrap gap-4">
             <a
               href="#get-involved"
@@ -430,43 +478,225 @@ function HeroSection() {
               Donate Now
             </a>
             <a
-              href="#about"
+              href="#about" style={{ background: "#1B6B6B" }}
               className="flex items-center gap-2.5 border-2 border-white/40 text-white px-8 py-4 rounded-full font-semibold text-base hover:border-white/80 hover:bg-white/8 transition-all"
             >
               Our Story
               <ArrowRight className="w-5 h-5" />
             </a>
           </div>
-        </div>
-      </div>
 
-      <div className="absolute bottom-0 left-0 right-0 z-10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-3 border-t border-white/15 bg-white/8 backdrop-blur-md divide-y sm:divide-y-0 sm:divide-x divide-white/15">
-            {[
-              { num: "15,000+", label: "Children Supported", Icon: Users },
-              { num: "210+", label: "Schools Reached", Icon: School },
-              { num: "580+", label: "Volunteers Nationwide", Icon: Heart },
-            ].map(({ num, label, Icon }) => (
-              <div key={label} className="flex items-center gap-5 px-8 py-7">
-                <Icon className="w-8 h-8 text-accent shrink-0" />
-                <div>
-                  <div
-                    className="text-2xl font-bold text-white"
-                    style={{ fontFamily: "var(--font-family-display)" }}
-                  >
-                    {num}
-                  </div>
-                  <div className="text-white/60 text-sm mt-0.5">{label}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* <div className="flex items-center gap-4 flex-wrap">
+            <button
+              className="px-6 py-3 rounded-full text-sm font-medium text-white transition-all duration-200 hover:opacity-90 active:scale-95"
+              style={{ background: "#1B6B6B", fontFamily: "'Inter', sans-serif" }}
+            >
+              What we do
+            </button>
+            <button
+              className="flex items-center gap-2.5 text-sm font-medium transition-colors duration-200 hover:opacity-70"
+              style={{ color: "#0F2A2A", fontFamily: "'Inter', sans-serif" }}
+            >
+              <span
+                className="w-9 h-9 rounded-full flex items-center justify-center border"
+                style={{ borderColor: "#C9A84C60", background: "#C9A84C12" }}
+              >
+                <Play size={13} fill="#C9A84C" color="#C9A84C" />
+              </span>
+              Play Video
+            </button>
+          </div> */}
         </div>
+
+        {/* Right — image collage */}
+        <div className="relative flex justify-center md:justify-end pt-8 pb-8">
+          {/* Main large image */}
+          <div
+            className="relative rounded-3xl overflow-hidden bg-[#D8E8D8] shadow-xl"
+            style={{ width: 450, height: 360 }}
+          >
+            <img
+              src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&h=720&fit=crop&auto=format"
+              alt="Five children smiling and showing peace signs"
+              className="w-full h-full object-cover"
+            />
+            <div
+              className="absolute inset-0 rounded-3xl"
+              style={{ background: "linear-gradient(180deg, transparent 60%, #1B6B6B22 100%)" }}
+            />
+          </div>
+
+          {/* Small square image — top right */}
+          <div
+            className="absolute top-0 -right-2 sm:right-0 w-32 h-32 rounded-2xl overflow-hidden border-4 shadow-lg bg-[#E8D8C8]"
+            style={{ borderColor: "#FDF8EE" }}
+          >
+            <img
+              src="https://childcareindiatrust.org/wp-content/uploads/2024/08/man-is-cooking-with-group-children_976492-67921.jpg"
+              alt="Four children laughing together on steps"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          {/* Small circle image — bottom right */}
+          <div
+            className="absolute bottom-4 -right-2 sm:right-0 w-24 h-24 rounded-full overflow-hidden border-4 shadow-md bg-[#D8E8D8]"
+            style={{ borderColor: "#FDF8EE" }}
+          >
+            <img
+              src="https://childcareindiatrust.org/wp-content/uploads/2024/09/360_F_649461336_VeKRYlh3Snjq7BCWXOmbh1IirtmWM1H3.png"
+              // src="https://images.unsplash.com/photo-1773379884572-616d50c21d69?w=180&h=180&fit=crop&auto=format"
+              alt="Three children standing together smiling"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          {/* Volunteer badge */}
+          <div
+            className="absolute -bottom-2 left-0 md:-left-6 rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3 border"
+            style={{ background: "#fff", borderColor: "#EDE8D8" }}
+          >
+            <div className="flex -space-x-2">
+              {avatarUrls.map((url, i) => (
+                <img
+                  key={i}
+                  src={url}
+                  alt="Volunteer"
+                  className="w-8 h-8 rounded-full border-2 object-cover bg-[#D0E8E8]"
+                  style={{ borderColor: "#FDF8EE" }}
+                />
+              ))}
+            </div>
+            <div>
+              <p
+                className="text-lg font-bold leading-none"
+                style={{ color: "#0F2A2A", fontFamily: "'Playfair Display', serif" }}
+              >
+                150
+              </p>
+              <p
+                className="text-[10px] mt-0.5"
+                style={{ color: "#6A9090", fontFamily: "'Inter', sans-serif" }}
+              >
+                Happy Volunteers
+              </p>
+            </div>
+          </div>
+
+          {/* Decorative dot grid */}
+          <div
+            className="absolute -left-6 top-8 w-20 h-20 opacity-25 pointer-events-none"
+            style={{
+              backgroundImage: "radial-gradient(circle, #C9A84C 1.5px, transparent 1.5px)",
+              backgroundSize: "10px 10px",
+            }}
+          />
+        </div>
+        {/* <div className="absolute bottom-0 left-0 right-0 z-10">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 border-t border-white/15 bg-white/8 backdrop-blur-md divide-y sm:divide-y-0 sm:divide-x divide-white/15">
+              {[
+                { num: "15,000+", label: "Children Supported", Icon: Users },
+                { num: "210+", label: "Schools Reached", Icon: School },
+                { num: "580+", label: "Volunteers Nationwide", Icon: Heart },
+              ].map(({ num, label, Icon }) => (
+                <div key={label} className="flex items-center gap-5 px-8 py-7">
+                  <Icon className="w-8 h-8 text-accent shrink-0" />
+                  <div>
+                    <div
+                      className="text-2xl font-bold text-white"
+                      style={{ fontFamily: "var(--font-family-display)" }}
+                    >
+                      {num}
+                    </div>
+                    <div className="text-white/60 text-sm mt-0.5">{label}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div> */}
       </div>
     </section>
   );
 }
+
+// function HeroSection() {
+//   return (
+//     <section id="home" className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-primary">
+//       <div className="absolute inset-0">
+//         <img
+//           src="https://images.unsplash.com/flagged/photo-1574098335395-18cf525e45d6?w=1920&h=1080&fit=crop&auto=format"
+//           alt="Boy learning in a rural classroom"
+//           className="w-full h-full object-cover opacity-30"
+//         />
+//         <div className="absolute inset-0 bg-gradient-to-r from-[#091f22]/95 via-[#1d5054]/85 to-[#1d5054]/55" />
+//       </div>
+
+//       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-44 w-full">
+//         <div className="max-w-3xl">
+//           <div className="flex items-center gap-3 mb-8">
+//             <div className="h-px w-12 bg-accent" />
+//             <span className="text-accent font-semibold tracking-widest text-xs uppercase">
+//               Visrambha Foundation
+//             </span>
+//           </div>
+//           <h1
+//             className="font-display text-5xl md:text-6xl lg:text-[4.5rem] font-bold text-white leading-[1.08] mb-8"
+//             style={{ fontFamily: "var(--font-family-display)" }}
+//           >
+//             {/* Every Child Deserves the Opportunity to Learn.  */}
+//             Building Stronger Communities, Creating Brighter Futures.
+//           </h1>
+//           <p className="text-white/72 text-xl leading-relaxed mb-10 max-w-2xl">
+//             We work alongside communities to expand access to quality education, strengthen rural development, and empower women with the skills and opportunities to build a better future.
+//           </p>
+//           <div className="flex flex-wrap gap-4">
+//             <a
+//               href="#get-involved"
+//               className="flex items-center gap-2.5 bg-accent text-white px-8 py-4 rounded-full font-semibold text-base hover:bg-accent/90 transition-all hover:scale-105 shadow-xl"
+//             >
+//               <Heart className="w-5 h-5" />
+//               Donate Now
+//             </a>
+//             <a
+//               href="#about"
+//               className="flex items-center gap-2.5 border-2 border-white/40 text-white px-8 py-4 rounded-full font-semibold text-base hover:border-white/80 hover:bg-white/8 transition-all"
+//             >
+//               Our Story
+//               <ArrowRight className="w-5 h-5" />
+//             </a>
+//           </div>
+//         </div>
+//       </div>
+
+//       <div className="absolute bottom-0 left-0 right-0 z-10">
+//         <div className="max-w-7xl mx-auto px-6">
+//           <div className="grid grid-cols-1 sm:grid-cols-3 border-t border-white/15 bg-white/8 backdrop-blur-md divide-y sm:divide-y-0 sm:divide-x divide-white/15">
+//             {[
+//               { num: "15,000+", label: "Children Supported", Icon: Users },
+//               { num: "210+", label: "Schools Reached", Icon: School },
+//               { num: "580+", label: "Volunteers Nationwide", Icon: Heart },
+//             ].map(({ num, label, Icon }) => (
+//               <div key={label} className="flex items-center gap-5 px-8 py-7">
+//                 <Icon className="w-8 h-8 text-accent shrink-0" />
+//                 <div>
+//                   <div
+//                     className="text-2xl font-bold text-white"
+//                     style={{ fontFamily: "var(--font-family-display)" }}
+//                   >
+//                     {num}
+//                   </div>
+//                   <div className="text-white/60 text-sm mt-0.5">{label}</div>
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
 
 // ─── ABOUT ───────────────────────────────────────────────────────────────────
 
@@ -485,7 +715,7 @@ function AboutSection() {
               className="text-4xl lg:text-5xl font-bold text-foreground leading-[1.1] mb-10"
               style={{ fontFamily: "var(--font-family-display)" }}
             >
-              Rooted in Communities, Growing with Every Child
+              Rooted in Communities, Growing With Every Life We Touch
             </h2>
             <div className="flex gap-2 mb-8 flex-wrap">
               {(["mission", "vision", "values"] as const).map(t => (
@@ -505,7 +735,7 @@ function AboutSection() {
               {tab === "mission" && (
                 <div>
                   <p className="text-foreground text-lg leading-relaxed mb-6">
-                    To ensure every child in rural and underserved India has access to quality education, safe learning spaces, and the mentorship needed to realize their full potential — regardless of gender, caste, or economic background.
+                    To close the distance between where someone starts and where they deserve to reach — through education that opens doors, healthcare that protects, and support that helps rural communities and women stand on their own strength. No child left behind by circumstance. No family left behind by silence.
                   </p>
                   <div className="flex items-center gap-3">
                     <CheckCircle className="w-5 h-5 text-accent shrink-0" />
@@ -515,22 +745,25 @@ function AboutSection() {
               )}
               {tab === "vision" && (
                 <p className="text-foreground text-lg leading-relaxed">
-                  A future India where no child is left behind — where every girl and boy, no matter how remote their village or how limited their family's means, has an equal shot at a life shaped by knowledge, dignity, and genuine opportunity.
-                </p>
+                  A future where a person's postcode never decides their potential — where every village has a school worth walking to, every family has access to care, and every woman has the means to choose her own path.                </p>
               )}
               {tab === "values" && (
-                <div className="grid grid-cols-2 gap-5">
-                  {VALUES.map(({ icon: Icon, title, desc }) => (
-                    <div key={title} className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
-                        <Icon className="w-4 h-4 text-accent" />
+                <div>
+                  <p>Dignity first, always — we serve, we don't rescue. Transparency in every rupee. Equity without exception — caste, religion, gender, or ability never determine who we help.</p>
+                  <br />
+                  <div className="grid grid-cols-2 gap-5">
+                    {VALUES.map(({ icon: Icon, title, desc }) => (
+                      <div key={title} className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
+                          <Icon className="w-4 h-4 text-accent" />
+                        </div>
+                        <div>
+                          <div className="font-semibold text-foreground text-sm">{title}</div>
+                          <div className="text-muted-foreground text-xs mt-1 leading-relaxed">{desc}</div>
+                        </div>
                       </div>
-                      <div>
-                        <div className="font-semibold text-foreground text-sm">{title}</div>
-                        <div className="text-muted-foreground text-xs mt-1 leading-relaxed">{desc}</div>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -574,10 +807,9 @@ function AboutSection() {
 
         {/* Founders */}
         <section
-          style={{ fontFamily: "'Inter', sans-serif" }}
           className="min-h-screen px-4 sm:px-8 py-14 sm:py-20 flex flex-col items-center relative overflow-hidden"
           style={{
-            background: "radial-gradient(ellipse 70% 50% at 20% 20%, #0D3535 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, #0A2828 0%, transparent 55%), #0B1F1F",
+            fontFamily: "'Inter', sans-serif", background: "radial-gradient(ellipse 70% 50% at 20% 20%, #0D3535 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, #0A2828 0%, transparent 55%), #0B1F1F",
           }}
         >
           <div className="w-full max-w-2xl">
@@ -665,7 +897,7 @@ function AboutSection() {
             <div className="mt-10 sm:mt-12 flex items-center gap-4 relative">
               <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[#C9A84C]/40" />
               <p className="text-[#8A7040] text-[11px] tracking-widest uppercase whitespace-nowrap">
-                 years of combined experience
+                years of combined experience
               </p>
               <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[#C9A84C]/40" />
             </div>
@@ -969,80 +1201,205 @@ function GallerySection() {
 
 // ─── EVENTS ──────────────────────────────────────────────────────────────────
 
-function EventsSection() {
-  const [tab, setTab] = useState<"upcoming" | "past">("upcoming");
-  const events = tab === "upcoming" ? UPCOMING_EVENTS : PAST_EVENTS;
-
+function EventCard({ ev }: { ev: typeof events[0] }) {
   return (
-    <section id="events" className="py-28 bg-background">
-      <div className="max-w-7xl mx-auto px-6">
-        <SectionTag number="04" label="Events" />
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
-          <h2
-            className="text-4xl lg:text-5xl font-bold text-foreground leading-[1.1]"
-            style={{ fontFamily: "var(--font-family-display)" }}
-          >
-            Events & Milestones
-          </h2>
-          <div className="flex bg-muted rounded-full p-1 shrink-0">
-            {(["upcoming", "past"] as const).map(t => (
-              <button
-                key={t}
-                onClick={() => setTab(t)}
-                className={`px-6 py-2.5 rounded-full text-sm font-semibold capitalize transition-all ${tab === t ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:text-foreground"
-                  }`}
-              >
-                {t}
-              </button>
-            ))}
+    <div
+      className="bg-white rounded-2xl overflow-hidden border flex flex-col flex-shrink-0 w-[88vw] sm:w-72 lg:w-auto transition-shadow duration-200 hover:shadow-xl"
+      style={{ borderColor: "#E8EFEF" }}
+    >
+      <div className="bg-[#D8EAEA] h-48 overflow-hidden">
+        <img
+          src={ev.image}
+          alt={ev.title}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div className="p-5 flex flex-col flex-1">
+        <span
+          className="text-[10px] tracking-[0.2em] uppercase font-semibold mb-2"
+          style={{ color: ev.categoryColor, fontFamily: "'Inter', sans-serif" }}
+        >
+          {ev.category}
+        </span>
+        <h3
+          className="text-base font-semibold mb-2 leading-snug"
+          style={{ color: "#0F2A2A", fontFamily: "'Playfair Display', serif" }}
+        >
+          {ev.title}
+        </h3>
+        <p
+          className="text-[13px] leading-relaxed font-light mb-4 flex-1"
+          style={{ color: "#6A8888", fontFamily: "'Inter', sans-serif" }}
+        >
+          {ev.desc}
+        </p>
+
+        {/* Progress */}
+        <div className="mb-4">
+          <div className="flex justify-between items-center mb-1.5">
+            <span className="text-[11px]" style={{ color: "#8AADAD", fontFamily: "'Inter', sans-serif" }}>
+              Donated
+            </span>
+            <span
+              className="text-[11px] font-medium"
+              style={{ color: "#1B6B6B", fontFamily: "'Inter', sans-serif" }}
+            >
+              {ev.progress}%
+            </span>
+          </div>
+          <div className="h-1.5 rounded-full bg-[#E8F0F0] overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all"
+              style={{ width: `${ev.progress}%`, background: "#C9A84C" }}
+            />
+          </div>
+          <div className="flex justify-between mt-1.5">
+            <span className="text-[11px]" style={{ color: "#8AADAD", fontFamily: "'Inter', sans-serif" }}>
+              Raised: ₹{(ev.raised / 1000).toFixed(0)}K
+            </span>
+            <span className="text-[11px]" style={{ color: "#8AADAD", fontFamily: "'Inter', sans-serif" }}>
+              Goal: ₹{(ev.goal / 1000).toFixed(0)}K
+            </span>
           </div>
         </div>
-        <div className="space-y-4">
-          {events.map((event, i) => (
-            <div
-              key={i}
-              className="group flex flex-col sm:flex-row gap-6 bg-card border border-border rounded-2xl p-6 hover:shadow-md hover:border-primary/25 transition-all duration-300"
+
+        <button
+          className="flex items-center justify-center gap-2 w-full py-2.5 rounded-full text-sm font-medium transition-all duration-200 hover:opacity-90 active:scale-95"
+          style={{ background: "#1B6B6B", color: "#fff", fontFamily: "'Inter', sans-serif" }}
+        >
+          Donate <ArrowRight size={14} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function EventsSection() {
+  const [offset, setOffset] = useState(0);
+  const max = events.length - 1;
+
+  return (
+    <section className="px-5 sm:px-10 lg:px-16 py-16 bg-[#F7FAF9]">
+      <div className="max-w-5xl mx-auto">
+        <div className="flex items-start justify-between mb-8 gap-4">
+          <div>
+            <p
+              className="text-[10px] tracking-[0.28em] uppercase font-semibold mb-2"
+              style={{ color: "#C9A84C", fontFamily: "'Inter', sans-serif" }}
             >
-              <div className="shrink-0">
-                <div className="w-20 h-20 rounded-2xl bg-primary/5 border border-primary/10 flex flex-col items-center justify-center">
-                  <Calendar className="w-5 h-5 text-accent mb-1" />
-                  <div className="text-[10px] text-muted-foreground text-center leading-tight font-semibold px-2">
-                    {event.date.split(",")[0]}
-                  </div>
-                </div>
-              </div>
-              <div className="flex-1">
-                <div className="flex flex-wrap items-center gap-3 mb-2">
-                  <span className="px-3 py-0.5 rounded-full bg-accent/10 text-accent text-xs font-semibold border border-accent/15">
-                    {event.type}
-                  </span>
-                  <span className="text-muted-foreground text-xs flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5" />
-                    {event.location}
-                  </span>
-                </div>
-                <h3
-                  className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors"
-                  style={{ fontFamily: "var(--font-family-display)" }}
-                >
-                  {event.title}
-                </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{event.desc}</p>
-              </div>
-              {tab === "upcoming" && (
-                <div className="shrink-0 flex items-center">
-                  {/* <button className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
-                    Register <ArrowRight className="w-4 h-4" />
-                  </button> */}
-                </div>
-              )}
-            </div>
+              Get involved
+            </p>
+            <h2
+              className="text-3xl sm:text-4xl font-semibold leading-tight"
+              style={{ color: "#0F2A2A", fontFamily: "'Playfair Display', serif" }}
+            >
+              Engage With Our<br />Ongoing Causes
+            </h2>
+          </div>
+          <div className="flex gap-2 mt-2 flex-shrink-0">
+            <button
+              onClick={() => setOffset((p) => Math.max(0, p - 1))}
+              disabled={offset === 0}
+              className="w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-200 disabled:opacity-30 hover:bg-[#1B6B6B] hover:border-[#1B6B6B] hover:text-white"
+              style={{ borderColor: "#C8D8D8", color: "#1B6B6B" }}
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <button
+              onClick={() => setOffset((p) => Math.min(max, p + 1))}
+              disabled={offset === max}
+              className="w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-200 disabled:opacity-30 hover:bg-[#1B6B6B] hover:border-[#1B6B6B] hover:text-white"
+              style={{ borderColor: "#C8D8D8", color: "#1B6B6B" }}
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        </div>
+
+        {/* Scrollable row on mobile, grid on lg */}
+        <div className="flex lg:grid lg:grid-cols-3 gap-5 overflow-x-auto pb-3 lg:overflow-visible scrollbar-hide">
+          {events.map((ev) => (
+            <EventCard key={ev.title} ev={ev} />
           ))}
         </div>
       </div>
     </section>
   );
 }
+// function EventsSection() {
+//   const [tab, setTab] = useState<"upcoming" | "past">("upcoming");
+//   const events = tab === "upcoming" ? UPCOMING_EVENTS : PAST_EVENTS;
+
+//   return (
+//     <section id="events" className="py-28 bg-background">
+//       <div className="max-w-7xl mx-auto px-6">
+//         <SectionTag number="04" label="Events" />
+//         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
+//           <h2
+//             className="text-4xl lg:text-5xl font-bold text-foreground leading-[1.1]"
+//             style={{ fontFamily: "var(--font-family-display)" }}
+//           >
+//             Events & Milestones
+//           </h2>
+//           <div className="flex bg-muted rounded-full p-1 shrink-0">
+//             {(["upcoming", "past"] as const).map(t => (
+//               <button
+//                 key={t}
+//                 onClick={() => setTab(t)}
+//                 className={`px-6 py-2.5 rounded-full text-sm font-semibold capitalize transition-all ${tab === t ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:text-foreground"
+//                   }`}
+//               >
+//                 {t}
+//               </button>
+//             ))}
+//           </div>
+//         </div>
+//         <div className="space-y-4">
+//           {events.map((event, i) => (
+//             <div
+//               key={i}
+//               className="group flex flex-col sm:flex-row gap-6 bg-card border border-border rounded-2xl p-6 hover:shadow-md hover:border-primary/25 transition-all duration-300"
+//             >
+//               <div className="shrink-0">
+//                 <div className="w-20 h-20 rounded-2xl bg-primary/5 border border-primary/10 flex flex-col items-center justify-center">
+//                   <Calendar className="w-5 h-5 text-accent mb-1" />
+//                   <div className="text-[10px] text-muted-foreground text-center leading-tight font-semibold px-2">
+//                     {event.date.split(",")[0]}
+//                   </div>
+//                 </div>
+//               </div>
+//               <div className="flex-1">
+//                 <div className="flex flex-wrap items-center gap-3 mb-2">
+//                   <span className="px-3 py-0.5 rounded-full bg-accent/10 text-accent text-xs font-semibold border border-accent/15">
+//                     {event.type}
+//                   </span>
+//                   <span className="text-muted-foreground text-xs flex items-center gap-1.5">
+//                     <MapPin className="w-3.5 h-3.5" />
+//                     {event.location}
+//                   </span>
+//                 </div>
+//                 <h3
+//                   className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors"
+//                   style={{ fontFamily: "var(--font-family-display)" }}
+//                 >
+//                   {event.title}
+//                 </h3>
+//                 <p className="text-muted-foreground text-sm leading-relaxed">{event.desc}</p>
+//               </div>
+//               {tab === "upcoming" && (
+//                 <div className="shrink-0 flex items-center">
+//                   {/* <button className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+//                     Register <ArrowRight className="w-4 h-4" />
+//                   </button> */}
+//                 </div>
+//               )}
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
 
 // ─── GET INVOLVED ─────────────────────────────────────────────────────────────
 
@@ -1050,10 +1407,10 @@ function GetInvolvedSection() {
   const [copied, setCopied] = useState("");
 
   const donationDetails = {
-    upi: "visrambha@upi",
+    upi: "visrambhafoundation.82260080@hdfcbank@upi",
     accountName: "Visrambha Foundation",
-    accountNumber: "123456789012",
-    ifsc: "HDFC0001234",
+    accountNumber: "50200121320235",
+    ifsc: "HDFC0004228",
     bank: "HDFC Bank",
     branch: "Bengaluru Main Branch",
   };
@@ -1076,7 +1433,8 @@ function GetInvolvedSection() {
           className="text-4xl lg:text-5xl font-bold text-white leading-[1.1] max-w-xl mb-16"
           style={{ fontFamily: "var(--font-family-display)" }}
         >
-          Be the Reason a Child Believes in Their Future
+          {/* Be the Reason a Child Believes in Their Future */}
+          DONATE DIRECTLY TO MAKE A CHANGE
         </h2>
 
         <div className="grid  gap-6">
@@ -1122,40 +1480,24 @@ function GetInvolvedSection() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center gap-6">
-
-                  {/* Dummy QR */}
-                  <div className="w-36 h-36 rounded-xl bg-white p-3 flex items-center justify-center shadow-lg">
-                    <div className="w-full h-full border-4 border-black rounded-lg flex items-center justify-center relative overflow-hidden">
-
-                      {/* Decorative dummy QR */}
-                      <div className="grid grid-cols-7 gap-1 w-[82%] h-[82%]">
-                        {Array.from({ length: 49 }).map((_, index) => (
-                          <span
-                            key={index}
-                            className={
-                              [0, 1, 2, 7, 9, 14, 21, 28, 35, 42, 43, 44, 46, 48]
-                                .includes(index)
-                                ? "bg-black"
-                                : index % 3 === 0
-                                  ? "bg-black"
-                                  : "bg-white"
-                            }
-                          />
-                        ))}
-                      </div>
-
+                  {/* QR Scanner */}
+                  <div className="w-44 h-56 rounded-2xl bg-white p-4 flex items-center justify-center shadow-lg shrink-0">
+                    <div className="w-full h-full border-4 border-black rounded-xl flex items-center justify-center overflow-hidden">
+                      <img
+                        src={scanner}
+                        alt="Visrambha Foundation UPI QR Code"
+                        className="w-full h-full object-contain"
+                      />
                     </div>
                   </div>
 
-                  {/* UPI */}
+                  {/* UPI Details */}
                   <div className="flex-1 w-full">
-
                     <p className="text-xs uppercase tracking-wider text-white/40 mb-2">
                       UPI ID
                     </p>
 
                     <div className="flex items-center justify-between gap-3 bg-white/10 border border-white/15 rounded-xl px-4 py-3">
-
                       <span className="text-white font-medium text-sm break-all">
                         {donationDetails.upi}
                       </span>
@@ -1173,7 +1515,6 @@ function GetInvolvedSection() {
                           <Copy className="w-4 h-4 text-accent" />
                         )}
                       </button>
-
                     </div>
 
                     <p className="text-white/35 text-xs mt-3">
@@ -1496,7 +1837,7 @@ function TaxCalculator() {
 
   return (
     <div>
-        {/* ═══ TAX CALCULATOR (image-1 style) ══════════════════════════════════════ */}
+      {/* ═══ TAX CALCULATOR (image-1 style) ══════════════════════════════════════ */}
       <section id="tax" className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
@@ -1943,7 +2284,7 @@ export default function App() {
         <HeroSection />
         <GetInvolvedSection />
         <AboutSection />
-        <TaxCalculator />
+        {/* <TaxCalculator /> */}
         <ProgramsSection />
         {/* <ImpactSection /> */}
         {/* <TestimonialsSection /> */}
