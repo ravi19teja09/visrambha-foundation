@@ -460,7 +460,7 @@ function HeroSection() {
             className="inline-block text-[10px] tracking-[0.28em] uppercase font-semibold px-3 py-1.5 rounded-full mb-6"
             style={{ background: "#1B6B6B18", color: "#1B6B6B" }}
           >
-            Visrambha Foundation · Est. 2014
+            Visrambha Foundation · Est. 2026
           </span>
 
           <h1
@@ -794,9 +794,9 @@ function AboutSection() {
                 className="text-3xl font-bold"
                 style={{ fontFamily: "var(--font-family-display)" }}
               >
-                7+
+                Together
               </div>
-              <div className="text-white/80 text-sm mt-0.5">Years of Impact</div>
+              <div className="text-white/80 text-sm mt-0.5">For a Better Tomorrow</div>
             </div>
             <div className="absolute -top-6 -right-6 bg-white border border-border p-5 rounded-2xl shadow-xl hidden md:block">
               <div className="flex items-center gap-3">
