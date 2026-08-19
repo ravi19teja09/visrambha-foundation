@@ -26,7 +26,7 @@ const events = [
     title: "Education Support – BR Hills",
     desc: "Supporting children in the BR Hills region with access to education, learning resources, and opportunities for a brighter future.",
     raised: 0,
-    goal: 0,
+    goal: 500000,
     progress: 0,
   },
   {
@@ -36,7 +36,7 @@ const events = [
     title: "Medical Relief – BR Hills",
     desc: "Providing essential medical assistance and healthcare support to underserved communities in the BR Hills region.",
     raised: 0,
-    goal: 0,
+    goal: 500000,
     progress: 0,
   },
 ];
@@ -55,30 +55,15 @@ const avatarUrls = [
 
 const founders = [
   {
-    initials: "SP",
-    name: "Sunil Paswan",
-    role: "Trust Member · DJ & Event Management",
-    bio: "Brings creativity, event coordination, and entertainment expertise to support the Foundation's events and community initiatives.",
-    cardBg: "linear-gradient(150deg, #1B5E5E 0%, #1F6F6F 60%, #256060 100%)",
+    initials: "KK",
+    name: "Kiran Kumar G M",
+    role: "Founder · Import & Export",
+    bio: "Founder of Visrambha Foundation, bringing his professional experience and vision towards creating meaningful opportunities for children and underserved communities.",
+    cardBg: "linear-gradient(150deg, #163C3C 0%, #1C5050 60%, #1F5A5A 100%)",
     badgeBg: "#C9A84C22",
     badgeColor: "#C9A84C",
     borderColor: "#C9A84C",
-    glowColor: "#1B5E5E55",
-    textName: "#fff",
-    textRole: "#C9A84C",
-    textBio: "#A8CECE",
-    ghostColor: "#C9A84C",
-  },
-  {
-    initials: "SB",
-    name: "Supriya B M",
-    role: "Trust Member · Event Management",
-    bio: "Contributes her event management and coordination skills to help organize meaningful Foundation activities and community programs.",
-    cardBg: "linear-gradient(150deg, #153D3D 0%, #1A5252 60%, #1E5858 100%)",
-    badgeBg: "#C9A84C22",
-    badgeColor: "#C9A84C",
-    borderColor: "#C9A84C",
-    glowColor: "#153D3D55",
+    glowColor: "#1C505055",
     textName: "#fff",
     textRole: "#C9A84C",
     textBio: "#96BEBE",
@@ -100,20 +85,35 @@ const founders = [
     ghostColor: "#C9A84C",
   },
   {
-    initials: "KK",
-    name: "Kiran Kumar G M",
-    role: "Founder · Import & Export",
-    bio: "Founder of Visrambha Foundation, bringing his professional experience and vision towards creating meaningful opportunities for children and underserved communities.",
-    cardBg: "linear-gradient(150deg, #163C3C 0%, #1C5050 60%, #1F5A5A 100%)",
+    initials: "SB",
+    name: "Supriya B M",
+    role: "Trust Member · Event Management",
+    bio: "Contributes her event management and coordination skills to help organize meaningful Foundation activities and community programs.",
+    cardBg: "linear-gradient(150deg, #153D3D 0%, #1A5252 60%, #1E5858 100%)",
     badgeBg: "#C9A84C22",
     badgeColor: "#C9A84C",
     borderColor: "#C9A84C",
-    glowColor: "#1C505055",
+    glowColor: "#153D3D55",
     textName: "#fff",
     textRole: "#C9A84C",
     textBio: "#96BEBE",
     ghostColor: "#C9A84C",
   },
+  {
+    initials: "SP",
+    name: "Sunil Paswan",
+    role: "Trust Member · DJ & Event Management",
+    bio: "Brings creativity, event coordination, and entertainment expertise to support the Foundation's events and community initiatives.",
+    cardBg: "linear-gradient(150deg, #1B5E5E 0%, #1F6F6F 60%, #256060 100%)",
+    badgeBg: "#C9A84C22",
+    badgeColor: "#C9A84C",
+    borderColor: "#C9A84C",
+    glowColor: "#1B5E5E55",
+    textName: "#fff",
+    textRole: "#C9A84C",
+    textBio: "#A8CECE",
+    ghostColor: "#C9A84C",
+  }
 ];
 
 const NAV_LINKS = [
@@ -170,6 +170,18 @@ const sliderStyle = (v: number, min: number, max: number) => ({
 
 const PROGRAMS = [
   {
+    icon: Heart,
+    title: "RELIEF TO POOR",
+    desc: "Providing essential support, food, clothing, and other basic necessities to underprivileged individuals and families in need.",
+    color: "accent",
+  },
+  {
+    icon: Users,
+    title: "SOCIAL WELFARE",
+    desc: "Promoting the well-being of communities through inclusive social initiatives, community support, and programs that create positive and lasting change.",
+    color: "primary",
+  },
+  {
     icon: BookOpen,
     title: "Education",
     desc: "Supporting children and underserved communities through access to quality education, learning opportunities, and educational resources.",
@@ -186,7 +198,7 @@ const PROGRAMS = [
     title: "Urban & Rural Development",
     desc: "Working towards sustainable development and improved living conditions in both urban and rural communities through meaningful social initiatives.",
     color: "primary",
-  },
+  }
 ];
 
 const STATS = [
@@ -1264,8 +1276,18 @@ function EventCard({ ev }: { ev: typeof events[0] }) {
         </div>
 
         <button
+          onClick={() =>
+            document.getElementById("get-involved")?.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            })
+          }
           className="flex items-center justify-center gap-2 w-full py-2.5 rounded-full text-sm font-medium transition-all duration-200 hover:opacity-90 active:scale-95"
-          style={{ background: "#1B6B6B", color: "#fff", fontFamily: "'Inter', sans-serif" }}
+          style={{
+            background: "#1B6B6B",
+            color: "#fff",
+            fontFamily: "'Inter', sans-serif",
+          }}
         >
           Donate <ArrowRight size={14} />
         </button>
@@ -1279,7 +1301,7 @@ function EventsSection() {
   const max = events.length - 1;
 
   return (
-    <section className="px-5 sm:px-10 lg:px-16 py-16 bg-[#F7FAF9]">
+    <section id="events" className="px-5 sm:px-10 lg:px-16 py-16 bg-[#F7FAF9]">
       <div className="max-w-5xl mx-auto">
         <div className="flex items-start justify-between mb-8 gap-4">
           <div>
@@ -2021,14 +2043,25 @@ function ContactSection() {
             </div>
 
             {/* Map placeholder */}
-            <div className="w-full aspect-[16/9] rounded-2xl bg-muted overflow-hidden border border-border mb-8">
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin className="w-8 h-8 text-primary/40 mx-auto mb-2" />
-                  <p className="text-muted-foreground text-sm">Visrambha Foundation HQ</p>
-                  <p className="text-muted-foreground/60 text-xs mt-1">Pune, Maharashtra</p>
-                </div>
-              </div>
+            {/* Google Map */}
+            {/* Google Map */}
+            <div
+              className="w-full aspect-[16/9] rounded-2xl bg-muted overflow-hidden border border-border mb-8 cursor-pointer"
+              onClick={() =>
+                window.open(
+                  "https://maps.app.goo.gl/JMfLMv7fSu8ZyC4dA?g_st=aw",
+                  "_blank"
+                )
+              }
+            >
+              <iframe
+                src="https://www.google.com/maps?q=Visrambha+Foundation,+Pune,+Maharashtra&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0, pointerEvents: "none" }}
+                loading="lazy"
+                title="Visrambha Foundation Location"
+              ></iframe>
             </div>
 
             {/* Social */}
