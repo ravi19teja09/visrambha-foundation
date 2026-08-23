@@ -16,7 +16,7 @@ import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 import logoImg from "@/imports/Screenshot_2026-08-07_171608.png";
 import FloatingActions from "@/app/components/ui/FloatingActions";
 import scanner from "../assets/hero-section-images/scanner.png";
-
+import emailjs from "@emailjs/browser";
 // ─── DATA ────────────────────────────────────────────────────────────────────
 const events = [
   {
@@ -57,7 +57,7 @@ const founders = [
   {
     initials: "KK",
     name: "Kiran Kumar G M",
-    role: "Founder · Import & Export",
+    role: "Founder",
     bio: "Founder of Visrambha Foundation, bringing his professional experience and vision towards creating meaningful opportunities for children and underserved communities.",
     cardBg: "linear-gradient(150deg, #163C3C 0%, #1C5050 60%, #1F5A5A 100%)",
     badgeBg: "#C9A84C22",
@@ -72,7 +72,7 @@ const founders = [
   {
     initials: "DG",
     name: "Darshan G",
-    role: "Trust Member · Interior Designer",
+    role: "Trust Member",
     bio: "Brings creative design expertise and a thoughtful approach to spaces, events, and initiatives that support the Foundation's mission.",
     cardBg: "linear-gradient(150deg, #1B5E5E 0%, #22686A 60%, #1A5A5C 100%)",
     badgeBg: "#C9A84C22",
@@ -87,7 +87,7 @@ const founders = [
   {
     initials: "SB",
     name: "Supriya B M",
-    role: "Trust Member · Event Management",
+    role: "Trust Member",
     bio: "Contributes her event management and coordination skills to help organize meaningful Foundation activities and community programs.",
     cardBg: "linear-gradient(150deg, #153D3D 0%, #1A5252 60%, #1E5858 100%)",
     badgeBg: "#C9A84C22",
@@ -102,7 +102,7 @@ const founders = [
   {
     initials: "SP",
     name: "Sunil Paswan",
-    role: "Trust Member · DJ & Event Management",
+    role: "Trust Member",
     bio: "Brings creativity, event coordination, and entertainment expertise to support the Foundation's events and community initiatives.",
     cardBg: "linear-gradient(150deg, #1B5E5E 0%, #1F6F6F 60%, #256060 100%)",
     badgeBg: "#C9A84C22",
@@ -1999,9 +1999,38 @@ function ContactSection() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+
+    try {
+      await emailjs.send(
+        "ravi19teja09@gmail.com",
+        "YOUR_TEMPLATE_ID",
+        {
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          subject: form.subject,
+          message: form.message,
+        },
+        "YOUR_PUBLIC_KEY"
+      );
+
+      setSubmitted(true);
+
+      // Optional: clear the form
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+
+    } catch (error) {
+      console.error("Failed to send email:", error);
+      alert("Sorry, we couldn't send your message. Please try again.");
+    }
   };
 
   return (
@@ -2055,7 +2084,7 @@ function ContactSection() {
               }
             >
               <iframe
-                src="https://www.google.com/maps?q=Visrambha+Foundation,+Pune,+Maharashtra&output=embed"
+                src="https://www.google.com/maps?q=No.+23,+3rd+Floor,+Darpra+Designs,+14+'A,+Dasarahalli+Main+Rd,+E+Block,+Sahakar+Nagar,+Byatarayanapura,+Bengaluru,+Karnataka+560092&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0, pointerEvents: "none" }}

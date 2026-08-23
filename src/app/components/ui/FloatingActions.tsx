@@ -2,7 +2,7 @@ import { Heart, MessageCircle } from "lucide-react";
 import { Button } from "./button";
 
 function FloatingActions() {
-  const whatsappNumber = "919876543210"; // Replace with your actual number
+  const whatsappNumber = "+917676861953"; // Replace with your actual number
 
   const handleDonate = () => {
     document.getElementById("get-involved")?.scrollIntoView({
