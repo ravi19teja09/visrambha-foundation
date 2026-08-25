@@ -2004,8 +2004,8 @@ function ContactSection() {
 
     try {
       await emailjs.send(
-        "ravi19teja09@gmail.com",
-        "YOUR_TEMPLATE_ID",
+        "service_7mt3f64",
+        "template_or37zvb",
         {
           name: form.name,
           email: form.email,
@@ -2013,7 +2013,7 @@ function ContactSection() {
           subject: form.subject,
           message: form.message,
         },
-        "YOUR_PUBLIC_KEY"
+        "3BZeraaoqmME7mtIC"
       );
 
       setSubmitted(true);
