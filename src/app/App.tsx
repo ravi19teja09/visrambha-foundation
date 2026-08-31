@@ -2096,15 +2096,17 @@ function ContactSection() {
             {/* Social */}
             <div className="flex items-center gap-3">
               {[
-                { Icon: Facebook, label: "Facebook" },
-                { Icon: Twitter, label: "Twitter" },
-                { Icon: Instagram, label: "Instagram" },
-                { Icon: Linkedin, label: "LinkedIn" },
-                { Icon: Youtube, label: "YouTube" },
-              ].map(({ Icon, label }) => (
+                { Icon: Facebook, label: "Facebook", href: "#" },
+                { Icon: Twitter, label: "Twitter", href: "#" },
+                { Icon: Instagram, label: "Instagram", href: "https://www.instagram.com/visrambha_foundation" },
+                { Icon: Linkedin, label: "LinkedIn", href: "#" },
+                { Icon: Youtube, label: "YouTube", href: "#" },
+              ].map(({ Icon, label, href }) => (
                 <a
                   key={label}
-                  href="#"
+                  href={href}
+                  target={href !== "#" ? "_blank" : undefined}
+                  rel={href !== "#" ? "noopener noreferrer" : undefined}
                   aria-label={label}
                   className="w-10 h-10 rounded-full bg-muted hover:bg-primary hover:text-white text-muted-foreground flex items-center justify-center transition-all duration-300 hover:scale-110"
                 >
@@ -2266,10 +2268,18 @@ function Footer() {
               Empowering children through education, one village at a time. Together, we are building a brighter India for every generation.
             </p>
             <div className="flex gap-3">
-              {[Facebook, Twitter, Instagram, Linkedin, Youtube].map((Icon, i) => (
+              {[
+                { Icon: Facebook, href: "#" },
+                { Icon: Twitter, href: "#" },
+                { Icon: Instagram, href: "https://www.instagram.com/visrambha_foundation" },
+                { Icon: Linkedin, href: "#" },
+                { Icon: Youtube, href: "#" },
+              ].map(({ Icon, href }, i) => (
                 <a
                   key={i}
-                  href="#"
+                  href={href}
+                  target={href !== "#" ? "_blank" : undefined}
+                  rel={href !== "#" ? "noopener noreferrer" : undefined}
                   className="w-9 h-9 rounded-full bg-white/8 hover:bg-accent flex items-center justify-center transition-all duration-300 hover:scale-110"
                 >
                   <Icon className="w-4 h-4" />
