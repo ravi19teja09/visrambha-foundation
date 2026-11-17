@@ -1434,11 +1434,24 @@ function GetInvolvedSection() {
     accountNumber: "50200121320235",
     ifsc: "HDFC0004228",
     bank: "HDFC Bank",
-    branch: "Bengaluru Main Branch",
+    branch: "Judicial Layout Branch",
   };
 
-  const copyToClipboard = async (value: any, type: any) => {
-    await navigator.clipboard.writeText(value);
+  const copyToClipboard = async (value: string, type: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch {
+      // Older mobile browsers block the Clipboard API; fall back to a hidden textarea.
+      const area = document.createElement("textarea");
+      area.value = value;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.opacity = "0";
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand("copy");
+      document.body.removeChild(area);
+    }
     setCopied(type);
 
     setTimeout(() => {
@@ -1573,6 +1586,11 @@ function GetInvolvedSection() {
                   <BankDetail
                     label="Account Name"
                     value={donationDetails.accountName}
+                    copyable
+                    copied={copied === "name"}
+                    onCopy={() =>
+                      copyToClipboard(donationDetails.accountName, "name")
+                    }
                   />
 
                   <BankDetail
@@ -1588,11 +1606,16 @@ function GetInvolvedSection() {
                     }
                   />
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
                     <BankDetail
                       label="IFSC"
                       value={donationDetails.ifsc}
+                      copyable
+                      copied={copied === "ifsc"}
+                      onCopy={() =>
+                        copyToClipboard(donationDetails.ifsc, "ifsc")
+                      }
                     />
 
                     <BankDetail
@@ -1641,12 +1664,12 @@ function BankDetail({
   return (
     <div className="flex items-center justify-between gap-3 bg-black/10 rounded-xl px-4 py-3">
 
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <p className="text-[10px] uppercase tracking-wider text-white/35 mb-1">
           {label}
         </p>
 
-        <p className="text-sm text-white/80 font-medium truncate">
+        <p className="text-sm text-white/80 font-medium break-words">
           {value}
         </p>
       </div>
